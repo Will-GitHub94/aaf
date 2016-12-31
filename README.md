@@ -56,7 +56,7 @@ uses [MeanJS](http://meanjs.org/).
 ## Specific to this repo
 
 If on a new machine then clone this repo, create a separate MEANJS app using the steps above in another directory. Copy across directories:<br>
-1. `.bluemix`
+1. `.bluemix`<br>
 2. `public`
 
 ...into the cloned repo directory
