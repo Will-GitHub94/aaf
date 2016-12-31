@@ -55,11 +55,18 @@ uses [MeanJS](http://meanjs.org/).
 
 ## Specific to this repo
 
-If on a new machine then clone this repo, create a separate MEANJS app using the steps above in another directory. Copy across directories:
+If on a new machine then clone this repo, create a separate MEANJS app using the steps above in another directory. Copy across directories:<br>
 1. `.bluemix`
 2. `public`
 
 ...into the cloned repo directory
 
-Run `npm install`<br>
-Run `grunt` to make sure everything is ok!
+Run:<br>
+```bash
+$ npm install
+```
+Run:<br>
+```bash
+$ grunt
+```
+...to make sure everything is ok!
