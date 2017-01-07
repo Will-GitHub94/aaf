@@ -10,6 +10,7 @@
             <option value="name">Alphabetical</option>
             <option value="age">Newest</option>
         </select>
+        <a class="btn btn-primary btn-lg" ng-click="vm.compareActivities = !vm.compareActivities">Compare</a>
     </div>
     <div id="activitiesList" class="list-group">
         <a ng-repeat="activity in vm.activities | filter:$ctrl.query | orderBy:$ctrl.orderProp"
@@ -23,6 +24,7 @@
                 <span ng-if="!activity.user">Deleted User</span>
             </small>
             <h4 class="list-group-item-heading" ng-bind="activity.name"></h4>
+            <input ng-show="vm.compareActivities" class="list-group-item" type="checkbox">
         </a>
     </div>
     <div class="alert alert-warning text-center" ng-if="vm.activities.$resolved && !vm.activities.length">

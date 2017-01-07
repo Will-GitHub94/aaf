@@ -10,6 +10,7 @@
 	function ActivitiesListController(ActivitiesService) {
 		var vm = this;
 
+		vm.compareActivities = false;
 		vm.activities = ActivitiesService.query();
 		vm.orderProp = 'name';
 	}
