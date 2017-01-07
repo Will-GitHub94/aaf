@@ -1,0 +1,31 @@
+<section>
+    <div class="page-header">
+        <h1>Activities</h1>
+    </div>
+    <div>
+        <label for="searchLabel">Search:</label>
+        <input id="searchLabel" ng-model="$ctrl.query" class="form-control">
+        <label for="sortLabel">Sort by:</label>
+        <select id="sortLabel" ng-model="$ctrl.orderProp" class="form-control">
+            <option value="name">Alphabetical</option>
+            <option value="age">Newest</option>
+        </select>
+    </div>
+    <div id="activitiesList" class="list-group">
+        <a ng-repeat="activity in vm.activities | filter:$ctrl.query | orderBy:$ctrl.orderProp"
+           ui-sref="activities.view({ activityId: activity._id })"
+           class="list-group-item">
+            <small class="list-group-item-text">
+                Posted on
+                <span ng-bind="activity.created | date:'mediumDate'"></span>
+                by
+                <span ng-if="activity.user" ng-bind="activity.user.displayName"></span>
+                <span ng-if="!activity.user">Deleted User</span>
+            </small>
+            <h4 class="list-group-item-heading" ng-bind="activity.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" ng-if="vm.activities.$resolved && !vm.activities.length">
+        No Activities yet, why don't you <a ui-sref="activities.create">create one</a>?
+    </div>
+</section>
