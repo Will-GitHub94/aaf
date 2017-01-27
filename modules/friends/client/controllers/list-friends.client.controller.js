@@ -11,6 +11,5 @@
 		var vm = this;
 
 		vm.friends = FriendsService.query();
-		console.log(vm.friends);
 	}
 }());

@@ -1,26 +1,66 @@
-<section>
-  <div class="page-header">
-    <h1 ng-bind="vm.activity.name"></h1>
-  </div>
-  <div class="pull-right"
-       ng-show="vm.activity.isCurrentUserOwner">
-    <a class="btn btn-primary"
-       ui-sref="activities.edit({ activityId: vm.activity._id })">
-      <i class="glyphicon glyphicon-edit"></i>
-    </a>
-    <a class="btn btn-primary" ng-click="vm.remove()">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a>
-  </div>
-  <small>
-    <em class="text-muted">
-      Posted on
-      <span ng-bind="vm.activity.created | date:'mediumDate'"></span>
-      by
-      <span ng-if="vm.activity.user"
-            ng-bind="vm.activity.user.displayName"></span>
-      <span ng-if="!vm.activity.user">Deleted User</span>
-    </em>
-  </small>
-  <p class="lead" ng-bind="vm.activity.content"></p>
+<section ng-init="vm.loadGPXFileIntoGoogleMap()">
+    <div class="page-header">
+        <h1 ng-bind="vm.activity.name"></h1>
+    </div>
+    <div class="pull-right"
+         ng-show="vm.activity.isCurrentUserOwner">
+        <a class="btn btn-primary"
+           ui-sref="activities.edit({ activityId: vm.activity._id })">
+            <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        <a class="btn btn-primary" ng-click="vm.remove()">
+            <i class="glyphicon glyphicon-trash"></i>
+        </a>
+        <a class="btn btn-primary" ng-click="vm.openModal()">
+            <i class="glyphicon glyphicon-share"></i>
+        </a>
+    </div>
+    <div>
+        <div id="map" class="map"></div>
+    </div>
+    <small>
+        <em class="text-muted">
+            Posted on
+            <span ng-bind="vm.activity.created | date:'mediumDate'"></span>
+            by
+            <span ng-if="vm.activity.user"
+                  ng-bind="vm.activity.user.displayName"></span>
+            <span ng-if="!vm.activity.user">Deleted User</span>
+        </em>
+    </small>
+
+    <p class="lead" ng-bind="vm.activity.content"></p>
+    <form name="vm.form.commentForm" class="form-horizontal" ng-submit="vm.addComment(vm.form.commentForm.$valid)">
+        <fieldset>
+            <div class="form-group" show-errors>
+                <label class="control-label" for="comment">Add comment:</label>
+                <input type="text" name="comment" id="comment" class="form-control" placeholder="Comment" ng-model="vm.comment" required>
+                <div ng-messages="vm.form.commentForm.comment.$error" role="alert">
+                    <p class="help-block error-text" ng-message="required">Comment is required.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Add comment</button>
+            </div>
+        </fieldset>
+    </form>
+
+    <div id="activityComments" class="list-group" ng-show="vm.activity.comments.length > 0">
+        <div class="list-group-item" ng-repeat="comment in vm.activity.comments">
+            <small>
+                <em class="text-muted">
+                    Posted on
+                    <span ng-bind="comment.added | date:'mediumDate'"></span>
+                    by
+                    <span ng-bind="comment.user.displayName"></span>
+                </em>
+            </small>
+            <h4 class="list-group-item-heading" ng-bind="comment.comment"></h4>
+            <div class="pull-right" ng-show="vm.activity.isCurrentUserOwner">
+                <a class="btn btn-primary" ng-click="vm.comments.splice(vm.comments.indexOf(comment), 1)">
+                    <i class="glyphicon glyphicon-trash"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 </section>

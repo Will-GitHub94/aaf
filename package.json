@@ -29,6 +29,7 @@
     "compression": "^1.5.0",
     "connect-flash": "~0.1.1",
     "connect-mongo": "~0.8.1",
+    "connect-multiparty": "^2.0.0",
     "consolidate": "~0.13.1",
     "cookie-parser": "^1.3.2",
     "crypto": "0.0.3",
@@ -48,6 +49,7 @@
     "mongoose": "~4.2.3",
     "morgan": "^1.6.1",
     "multer": "~1.0.5",
+    "ng-file-upload": "^12.2.13",
     "nodemailer": "^1.4.0",
     "owasp-password-strength-test": "^1.3.0",
     "passport": "~0.2.2",
@@ -62,7 +64,8 @@
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.3.7",
     "swig": "^1.4.2",
-    "validator": "^3.41.2"
+    "validator": "^3.41.2",
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.4",

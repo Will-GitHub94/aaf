@@ -12,6 +12,10 @@ module.exports = function (app) {
 		.get(friends.list)
 		.post(friends.add);
 
+	app.route('/api/:userId/friends').all(friendsPolicy.isAllowed)
+		.get(friends.usersFriends)
+		.post(friends.add);
+
 	app.route('/api/friends/users')
 		.get(friends.usersList);
 
@@ -20,6 +24,14 @@ module.exports = function (app) {
 		.put(friends.update)
 		.delete(friends.delete);
 
+	app.route('/api/:userId/friends/:friendId').all(friendsPolicy.isAllowed)
+		.get(friends.read)
+		.put(friends.update)
+		.delete(friends.delete);
+
 	// Finish by binding the Friend middleware
+
+	// do I have to bind users here?
+	app.param('userId', friends.userByID);
 	app.param('friendId', friends.friendByID);
 };

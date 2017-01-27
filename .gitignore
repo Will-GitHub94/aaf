@@ -10,7 +10,10 @@ Thumbs.db
 .nodemonignore
 .sass-cache/
 node_modules/
-public/
+public/dist
+public/lib
+public/humans.txt
+public/robots.txt
 .bluemix/
 app/tests/coverage/
 CHANGELOG.md

@@ -24,7 +24,7 @@
                 <span ng-if="!activity.user">Deleted User</span>
             </small>
             <h4 class="list-group-item-heading" ng-bind="activity.name"></h4>
-            <input ng-show="vm.compareActivities" class="list-group-item" type="checkbox">
+            <input ng-show="vm.compareActivities" class="pull-right" type="checkbox">
         </a>
     </div>
     <div class="alert alert-warning text-center" ng-if="vm.activities.$resolved && !vm.activities.length">

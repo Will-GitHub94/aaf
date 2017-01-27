@@ -6,10 +6,11 @@
 		.module('friends')
 		.factory('FriendsService', FriendsService);
 
-	FriendsService.$inject = ['$resource'];
+	FriendsService.$inject = ['$resource', 'Authentication'];
 
-	function FriendsService($resource) {
-		return $resource('api/friends/:friendId', {
+	function FriendsService($resource, Authentication) {
+		return $resource('api/:userId/friends/:friendId', {
+			userId: Authentication.user._id,
 			friendId: '@_id'
 		}, {
 			update: {

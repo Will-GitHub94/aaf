@@ -30,6 +30,17 @@ module.exports = {
   logo: 'modules/core/client/img/brand/logo.png',
   favicon: 'modules/core/client/img/brand/favicon.ico',
   uploads: {
+  	gpxUpload: {
+  		dest: './modules/activities/client/gpxData/',
+	    storage: {
+  			destination: function(req, file, callback) {
+  				callback(null, './modules/activities/client/gpxData/')
+		    },
+		    filename: function (req, file, callback) {
+			    callback(null, file.originalname)
+		    }
+	    }
+    },
     profileUpload: {
       dest: './modules/users/client/img/profile/uploads/', // Profile upload destination path
       limits: {

@@ -15,7 +15,7 @@
 				template: '<ui-view/>'
 			})
 			.state('friends.list', {
-				url: '',
+				url: '/:userId',
 				templateUrl: 'modules/friends/client/views/list-friends.client.view.html',
 				controller: 'FriendsListController',
 				controllerAs: 'vm',

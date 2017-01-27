@@ -16,10 +16,13 @@ var ActivitySchema = new Schema({
 		required: 'Please fill Activity name',
 		trim: true
 	},
-	comment: {
+	comments: {
+		type: Array,
+		default: []
+	},
+	gpxData: {
 		type: String,
-		default: '',
-		trim: true
+		default: ''
 	},
 	created: {
 		type: Date,
@@ -28,6 +31,10 @@ var ActivitySchema = new Schema({
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
+	},
+	sharedWith: {
+		type: Array,
+		default: []
 	}
 });
 

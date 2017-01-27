@@ -11,9 +11,7 @@
 	function FriendsController($scope, $state, $window, Authentication, friend, UsersService) {
 		var vm = this;
 
-		UsersService.query(function(data) {
-			vm.users = data;
-		});
+		vm.users = UsersService.query();
 
 		vm.authentication = Authentication;
 

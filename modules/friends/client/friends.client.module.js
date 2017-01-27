@@ -1,5 +1,5 @@
 (function (app) {
-  'use strict';
+	'use strict';
 
-  app.registerModule('friends');
+	app.registerModule('friends');
 }(ApplicationConfiguration));

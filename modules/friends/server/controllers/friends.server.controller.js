@@ -32,6 +32,7 @@ exports.add = function (req, res) {
  * Show the current Friend
  */
 exports.read = function (req, res) {
+	console.log(req.params);
 	// convert mongoose document to JSON
 	var friend = req.friend ? req.friend.toJSON() : {};
 
@@ -93,6 +94,22 @@ exports.list = function (req, res) {
 	});
 };
 
+exports.usersFriends = function(req, res) {
+	var userId = req.params.userId;
+
+	Friend.find({
+		user: mongoose.Types.ObjectId(userId)
+	}).populate("user", "displayName").exec(function(err, friends) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			})
+		} else {
+			res.jsonp(friends);
+		}
+	});
+};
+
 /**
  * List of Users
  */
@@ -112,7 +129,6 @@ exports.usersList = function(req, res) {
  * Friend middleware
  */
 exports.friendByID = function (req, res, next, id) {
-
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		return res.status(400).send({
 			message: 'Friend is invalid'
@@ -128,6 +144,28 @@ exports.friendByID = function (req, res, next, id) {
 			});
 		}
 		req.friend = friend;
+		next();
+	});
+};
+
+/**
+ * User middleware
+ */
+exports.userByID = function (req, res, next, id) {
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(400).send({
+			message: 'User is invalid'
+		});
+	}
+
+	User.findById(id, '-salt -password').exec(function (err, user) {
+		if (err) {
+			return next(err);
+		} else if (!user) {
+			return next(new Error('Failed to load user ' + id));
+		}
+
+		req.model = user;
 		next();
 	});
 };

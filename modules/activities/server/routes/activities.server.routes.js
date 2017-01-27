@@ -4,19 +4,33 @@
  * Module dependencies
  */
 var activitiesPolicy = require('../policies/activities.server.policy'),
-  activities = require('../controllers/activities.server.controller');
+	activities = require('../controllers/activities.server.controller');
+	// multiparty = require('connect-multiparty'),
+	// multipartyMiddleware = multiparty();
 
-module.exports = function(app) {
-  // Activities Routes
-  app.route('/api/activities').all(activitiesPolicy.isAllowed)
-    .get(activities.list)
-    .post(activities.create);
+module.exports = function (app) {
+	// Activities Routes
+	app.route('/api/activities/gpxData').all(activitiesPolicy.isAllowed)
+		.post(activities.uploadGpx);
 
-  app.route('/api/activities/:activityId').all(activitiesPolicy.isAllowed)
-    .get(activities.read)
-    .put(activities.update)
-    .delete(activities.delete);
+	app.route('/api/activities').all(activitiesPolicy.isAllowed)
+		.get(activities.list)
+		.post(activities.create);
 
-  // Finish by binding the Activity middleware
-  app.param('activityId', activities.activityByID);
+	app.route('/api/:userId/activities').all(activitiesPolicy.isAllowed)
+		.get(activities.usersActivities)
+		.post(activities.create);
+
+	app.route('/api/activities/:activityId').all(activitiesPolicy.isAllowed)
+		.get(activities.read)
+		.put(activities.update)
+		.delete(activities.delete);
+
+	app.route('/api/:userId/activities/:activityId').all(activitiesPolicy.isAllowed)
+		.get(activities.read)
+		.put(activities.update)
+		.delete(activities.delete);
+
+	// Finish by binding the Activity middleware
+	app.param('activityId', activities.activityByID);
 };
