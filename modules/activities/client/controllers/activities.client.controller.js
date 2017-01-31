@@ -11,6 +11,15 @@
 	function ActivitiesController($scope, $state, $window, Authentication, activity, $modal, FriendsService, ActivitiesService, FileUploader, $q) {
 		var vm = this;
 
+		if (activity.length) {
+			vm.activities = [];
+			activity.forEach(function(activity) {
+				vm.activities.push(activity);
+			});
+		} else {
+			vm.activity = activity;
+		}
+
 		FriendsService.query(function (data) {
 			vm.friends = data;
 			$scope.friends = data;
@@ -18,9 +27,8 @@
 
 		vm.authentication = Authentication;
 		vm.friendsToShareWith = [];
-		vm.activity = activity;
 
-		if (vm.activity.gpxData) {
+		if ((vm.activity) && (vm.activity.gpxData)) {
 			vm.gpxData = vm.activity.gpxData.data;
 			vm.activity.gpxData = vm.activity.gpxData.filename;
 		}
@@ -132,23 +140,7 @@
 
 		function openModal() {
 			$modal.open({
-				template: "<div class='modal-header'>"
-				+ "<h3 class='modal-title' id='modal-title'>Friends</h3>"
-				+ "</div>"
-				+ "<div class='modal-body list-group' id='modal-body'>"
-				+ "<div ng-repeat='friend in friends' class='list-group-item'>"
-				+ "<img class='friend-user-profile-picture' ng-src='{{ friend.friend.profileImageURL }}' alt='{{ friend.friend.displayName }}'>"
-				+ "<h4 class='list-group-item-heading' ng-bind='friend.friend.displayName'></h4>"
-				+ "<small class='list-group-item-text' ng-bind='friend.friend.username'></small>"
-				+ "<p class='list-group-item-text' ng-bind='friend.friend.email'></p>"
-				+ "<input ng-click='toggleClicked(friend.friend, friend.checked)' ng-model='friend.checked' " +
-				"ng-checked='friend.checked' class='pull-right' type='checkbox'>"
-				+ "</div>"
-				+ "</div>"
-				+ "<div class='modal-footer'>"
-				+ "<button class='btn btn-primary' type='button' ng-click='ok()'>Share</button>"
-				+ "<button class='btn btn-warning' type='button' ng-click='cancel()'>Cancel</button>"
-				+ "</div>",
+				templateUrl: "templates/friend-modal.template.html",
 				size: 'lg',
 				scope: $scope,
 				controller: function ($modalInstance, $scope) {

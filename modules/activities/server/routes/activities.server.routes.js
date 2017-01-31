@@ -17,6 +17,9 @@ module.exports = function (app) {
 		.get(activities.list)
 		.post(activities.create);
 
+	app.route('/api/activities/compare/:activityIds').all(activitiesPolicy.isAllowed)
+		.get(activities.readMultiple);
+
 	app.route('/api/:userId/activities').all(activitiesPolicy.isAllowed)
 		.get(activities.usersActivities)
 		.post(activities.create);
@@ -33,4 +36,5 @@ module.exports = function (app) {
 
 	// Finish by binding the Activity middleware
 	app.param('activityId', activities.activityByID);
+	app.param('activityIds', activities.activitiesByID)
 };

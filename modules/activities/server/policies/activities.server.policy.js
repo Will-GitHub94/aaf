@@ -38,6 +38,9 @@ exports.invokeRolesPolicies = function () {
 		}, {
 			resources: '/api/activities/gpxData',
 			permissions: ['post']
+		}, {
+			resources: '/api/activities/compare/:activityIds',
+			permissions: ['get']
 		}]
 	}]);
 };

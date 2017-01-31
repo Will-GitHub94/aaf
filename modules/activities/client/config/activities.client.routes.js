@@ -36,13 +36,25 @@
 					pageTitle: 'Activities Create'
 				}
 			})
+			.state('activities.compare', {
+				url: '/compare/:activityIds',
+				templateUr: '',
+				controller: 'ActivitiesController',
+				controllerAs: 'vm',
+				resolve: {
+					activityResolve: getMultipleActivities
+				},
+				data: {
+					roles: ['user', 'admin']
+				}
+			})
 			.state('activities.edit', {
 				url: '/:activityId/edit',
 				templateUrl: 'modules/activities/client/views/form-activity.client.view.html',
 				controller: 'ActivitiesController',
 				controllerAs: 'vm',
 				resolve: {
-					activityResolve: getActivity
+					activityResolve: getSingleActivity
 				},
 				data: {
 					roles: ['user', 'admin'],
@@ -55,7 +67,7 @@
 				controller: 'ActivitiesController',
 				controllerAs: 'vm',
 				resolve: {
-					activityResolve: getActivity
+					activityResolve: getSingleActivity
 				},
 				data: {
 					pageTitle: 'Activity {{ activityResolve.name }}'
@@ -63,10 +75,10 @@
 			});
 	}
 
-	getActivity.$inject = ['$stateParams', 'ActivitiesService'];
+	getSingleActivity.$inject = ['$stateParams', 'ActivitiesService'];
 
-	function getActivity($stateParams, ActivitiesService) {
-		return ActivitiesService.getActivitiesOfAllUsers.get({
+	function getSingleActivity($stateParams, ActivitiesService) {
+		return ActivitiesService.getActivitiesOfCurrentUser.get({
 			activityId: $stateParams.activityId
 		}).$promise;
 	}
@@ -75,5 +87,13 @@
 
 	function newActivity(ActivitiesService) {
 		return new ActivitiesService.getActivitiesOfAllUsers;
+	}
+
+	getMultipleActivities.$inject = ['$stateParams', 'ActivitiesService'];
+
+	function getMultipleActivities($stateParams, ActivitiesService) {
+		return ActivitiesService.getMultipleActivitiesOfAllUsers.query({
+			activityIds: $stateParams.activityIds
+		}).$promise
 	}
 }());

@@ -10,8 +10,23 @@ var path = require('path'),
 	_ = require('lodash'),
 	fs = require('fs'),
 	config = require(path.resolve('./config/config')),
-	multer = require('multer'),
-	XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+	multer = require('multer');
+
+/**
+ * Gets the data from the GPX file the activity uses
+ */
+var addGpxDataAndCurrentUserToActivity = function (activity, req) {
+	var gpxDataFile = path.join(__dirname, "../../client/gpxData", activity.gpxData);
+
+	fs.readFile(gpxDataFile, "utf-8", function (err, data) {
+		activity.gpxData = {
+			filename: activity.gpxData,
+			data: data
+		};
+		activity.isCurrentUserOwner = (req.user) && (activity.user) && (activity.user._id.toString() === req.user._id.toString());
+	});
+	return activity;
+};
 
 /**
  * Create a Activity
@@ -35,23 +50,24 @@ exports.create = function (req, res) {
  * Show the current Activity
  */
 exports.read = function (req, res) {
-	var gpxDataFile = path.join(__dirname, "../../client/gpxData", req.activity.gpxData),
-		activity = req.activity ? req.activity.toJSON() : {};
+	var activity = req.activity ? req.activity.toJSON() : {};
 
-	fs.readFile(gpxDataFile, "utf-8", function (err, data) {
-		activity.gpxData = {
-			filename: req.activity.gpxData,
-			data: data
-		};
+	res.jsonp(addGpxDataAndCurrentUserToActivity(activity, req));
+};
 
-		// convert mongoose document to JSON
+/**
+ * Shows the activities wanting to be compared
+ */
+exports.readMultiple = function (req, res) {
+	var activities = req.activities,
+		activitiesArr = [];
 
-		// Add a custom field to the Article, for determining if the current User is the "owner".
-		// NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
-		activity.isCurrentUserOwner = req.user && activity.user && activity.user._id.toString() === req.user._id.toString();
-
-		res.jsonp(activity);
-	});
+	for (var key in activities) {
+		if (activities.hasOwnProperty(key)) {
+			activitiesArr.push(addGpxDataAndCurrentUserToActivity(activities[key], req));
+		}
+	}
+	res.jsonp(activitiesArr);
 };
 
 /**
@@ -59,12 +75,6 @@ exports.read = function (req, res) {
  */
 exports.update = function (req, res) {
 	var activity = req.activity;
-
-	console.log("\n====================");
-	console.log(activity);
-	console.log("\n");
-	console.log(req.body);
-	console.log("====================\n");
 
 	activity = _.extend(activity, req.body);
 
@@ -150,13 +160,35 @@ exports.activityByID = function (req, res, next, id) {
 	});
 };
 
-exports.uploadGpx = function(req, res) {
+exports.activitiesByID = function (req, res, next, ids) {
+	var activityIds = _.map(ids.split(','), function(activityId) {
+		if (!mongoose.Types.ObjectId.isValid(activityId)) {
+			// handle error
+		}
+		return mongoose.Types.ObjectId(activityId);
+	});
+
+	Activity.find({ _id: {
+		$in: activityIds
+	}}).sort('-created').populate('user', 'displayName').exec(function (err, activities) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			req.activities = activities;
+			next();
+		}
+	});
+};
+
+exports.uploadGpx = function (req, res) {
 	var storage = multer.diskStorage(config.uploads.gpxUpload.storage),
 		upload = multer({
 			storage: storage
 		}).single('gpxData');
 
-	upload(req, res, function(err) {
+	upload(req, res, function (err) {
 		if (err) {
 			console.log(err);
 		}

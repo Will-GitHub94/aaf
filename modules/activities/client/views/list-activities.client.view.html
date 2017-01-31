@@ -10,22 +10,29 @@
             <option value="name">Alphabetical</option>
             <option value="age">Newest</option>
         </select>
-        <a class="btn btn-primary btn-lg" ng-click="vm.compareActivities = !vm.compareActivities">Compare</a>
+        <a class="btn btn-default btn-lg" ng-click="vm.toggleWantToCompare()"
+           ng-class="{ 'disabled': vm.wantToCompare}">Allow Compare</a>
+        <a class="btn btn-danger btn-lg" ng-click="vm.toggleWantToCompare()"
+           ng-class="{ 'disabled': !vm.wantToCompare}">Disallow Compare</a>
+        <a class="btn btn-primary btn-lg" ng-class="{ 'disabled': !vm.wantToCompare }" ng-click="vm.compare()">Compare</a>
     </div>
     <div id="activitiesList" class="list-group">
-        <a ng-repeat="activity in vm.activities | filter:$ctrl.query | orderBy:$ctrl.orderProp"
-           ui-sref="activities.view({ activityId: activity._id })"
+        <div ng-repeat="activity in vm.activities | filter:$ctrl.query | orderBy:$ctrl.orderProp"
            class="list-group-item">
-            <small class="list-group-item-text">
-                Posted on
-                <span ng-bind="activity.created | date:'mediumDate'"></span>
-                by
-                <span ng-if="activity.user" ng-bind="activity.user.displayName"></span>
-                <span ng-if="!activity.user">Deleted User</span>
-            </small>
-            <h4 class="list-group-item-heading" ng-bind="activity.name"></h4>
-            <input ng-show="vm.compareActivities" class="pull-right" type="checkbox">
-        </a>
+            <a ui-sref="activities.view({ activityId: activity._id })">
+                <small class="list-group-item-text">
+                    Posted on
+                    <span ng-bind="activity.created | date:'mediumDate'"></span>
+                    by
+                    <span ng-if="activity.user" ng-bind="activity.user.displayName"></span>
+                    <span ng-if="!activity.user">Deleted User</span>
+                </small>
+                <h4 class="list-group-item-heading" ng-bind="activity.name"></h4>
+            </a>
+            <input ng-if="vm.wantToCompare" ng-model="activity.wantsToCompare"
+                   ng-click="vm.toggleActivityToCompare(activity._id, activity.wantsToCompare)"
+                   ng-checked="activity.wantsToCompare" class="pull-right" type="checkbox">
+        </div>
     </div>
     <div class="alert alert-warning text-center" ng-if="vm.activities.$resolved && !vm.activities.length">
         No Activities yet, why don't you <a ui-sref="activities.create">create one</a>?

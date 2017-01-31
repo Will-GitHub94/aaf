@@ -11,3 +11,5 @@ angular.module('activities').directive('onSearchBar', function () {
 		});
 	};
 });
+
+
