@@ -1,13 +1,24 @@
-(function () {
-	'use strict';
+'use strict';
 
-	angular
-		.module('activities')
-		.config(routeConfig);
+angular.module('activities').config(['$stateProvider',
+	($stateProvider) => {
 
-	routeConfig.$inject = ['$stateProvider'];
+		let getSingleActivity = ['$stateParams', 'ActivitiesService', ($stateParams, ActivitiesService) => {
+			return ActivitiesService.getActivitiesOfCurrentUser.get({
+				activityId: $stateParams.activityId
+			}).$promise;
+		}];
 
-	function routeConfig($stateProvider) {
+		let newActivity = ['ActivitiesService', (ActivitiesService) => {
+			return new ActivitiesService.getActivitiesOfAllUsers;
+		}];
+
+		let getMultipleActivities = ['$stateParams', 'ActivitiesService', ($stateParams, ActivitiesService) => {
+			return ActivitiesService.getMultipleActivitiesOfAllUsers.query({
+				activityIds: $stateParams.activityIds
+			}).$promise
+		}];
+
 		$stateProvider
 			.state('activities', {
 				abstract: true,
@@ -18,7 +29,6 @@
 				url: '',
 				templateUrl: 'modules/activities/client/views/list-activities.client.view.html',
 				controller: 'ActivitiesListController',
-				controllerAs: 'vm',
 				data: {
 					pageTitle: 'Activities List'
 				}
@@ -26,8 +36,7 @@
 			.state('activities.create', {
 				url: '/create',
 				templateUrl: 'modules/activities/client/views/form-activity.client.view.html',
-				controller: 'ActivitiesController',
-				controllerAs: 'vm',
+				controller: 'ActivitiesCreateController',
 				resolve: {
 					activityResolve: newActivity
 				},
@@ -38,9 +47,8 @@
 			})
 			.state('activities.compare', {
 				url: '/compare/:activityIds',
-				templateUr: '',
-				controller: 'ActivitiesController',
-				controllerAs: 'vm',
+				templateUrl: 'modules/activities/client/views/compare-activities.client.view.html',
+				controller: 'ActivitiesViewController',
 				resolve: {
 					activityResolve: getMultipleActivities
 				},
@@ -51,8 +59,7 @@
 			.state('activities.edit', {
 				url: '/:activityId/edit',
 				templateUrl: 'modules/activities/client/views/form-activity.client.view.html',
-				controller: 'ActivitiesController',
-				controllerAs: 'vm',
+				controller: 'ActivitiesEditController',
 				resolve: {
 					activityResolve: getSingleActivity
 				},
@@ -64,8 +71,7 @@
 			.state('activities.view', {
 				url: '/:activityId',
 				templateUrl: 'modules/activities/client/views/view-activity.client.view.html',
-				controller: 'ActivitiesController',
-				controllerAs: 'vm',
+				controller: 'ActivitiesViewController',
 				resolve: {
 					activityResolve: getSingleActivity
 				},
@@ -74,26 +80,4 @@
 				}
 			});
 	}
-
-	getSingleActivity.$inject = ['$stateParams', 'ActivitiesService'];
-
-	function getSingleActivity($stateParams, ActivitiesService) {
-		return ActivitiesService.getActivitiesOfCurrentUser.get({
-			activityId: $stateParams.activityId
-		}).$promise;
-	}
-
-	newActivity.$inject = ['ActivitiesService'];
-
-	function newActivity(ActivitiesService) {
-		return new ActivitiesService.getActivitiesOfAllUsers;
-	}
-
-	getMultipleActivities.$inject = ['$stateParams', 'ActivitiesService'];
-
-	function getMultipleActivities($stateParams, ActivitiesService) {
-		return ActivitiesService.getMultipleActivitiesOfAllUsers.query({
-			activityIds: $stateParams.activityIds
-		}).$promise
-	}
-}());
+]);

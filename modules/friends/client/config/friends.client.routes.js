@@ -1,13 +1,16 @@
-(function () {
-	'use strict';
+angular.module('friends').config(['$stateProvider',
+	($stateProvider) => {
 
-	angular
-		.module('friends')
-		.config(routeConfig);
+		let getFriend = ['$stateParams', 'FriendsService', ($stateParams, FriendsService) => {
+			return FriendsService.get({
+				friendId: $stateParams.friendId
+			}).$promise;
+		}];
 
-	routeConfig.$inject = ['$stateProvider'];
+		let newFriend = ['FriendsService', (FriendsService) => {
+			return new FriendsService();
+		}];
 
-	function routeConfig($stateProvider) {
 		$stateProvider
 			.state('friends', {
 				abstract: true,
@@ -18,7 +21,6 @@
 				url: '/:userId',
 				templateUrl: 'modules/friends/client/views/list-friends.client.view.html',
 				controller: 'FriendsListController',
-				controllerAs: 'vm',
 				data: {
 					pageTitle: 'Friends List'
 				}
@@ -27,7 +29,6 @@
 				url: '/add',
 				templateUrl: 'modules/friends/client/views/form-friend.client.view.html',
 				controller: 'FriendsController',
-				controllerAs: 'vm',
 				resolve: {
 					friendResolve: newFriend
 				},
@@ -40,7 +41,6 @@
 				url: '/:friendId',
 				templateUrl: 'modules/friends/client/views/view-friend.client.view.html',
 				controller: 'FriendsController',
-				controllerAs: 'vm',
 				resolve: {
 					friendResolve: getFriend
 				},
@@ -48,19 +48,4 @@
 					pageTitle: 'Friend {{ friendResolve.name }}'
 				}
 			});
-	}
-
-	getFriend.$inject = ['$stateParams', 'FriendsService'];
-
-	function getFriend($stateParams, FriendsService) {
-		return FriendsService.get({
-			friendId: $stateParams.friendId
-		}).$promise;
-	}
-
-	newFriend.$inject = ['FriendsService'];
-
-	function newFriend(FriendsService) {
-		return new FriendsService();
-	}
-}());
+	}]);

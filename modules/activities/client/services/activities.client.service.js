@@ -1,14 +1,5 @@
-// Activities service used to communicate Activities REST endpoints
-(function () {
-	'use strict';
-
-	angular
-		.module('activities')
-		.factory('ActivitiesService', ActivitiesService);
-
-	ActivitiesService.$inject = ['$resource', 'Authentication'];
-
-	function ActivitiesService($resource, Authentication) {
+angular.module('activities').factory('ActivitiesService', ['$resource', 'Authentication',
+	($resource, Authentication) => {
 		return {
 			getActivitiesOfCurrentUser: $resource('api/:userId/activities/:activityId', {
 				userId: Authentication.user._id,
@@ -28,4 +19,4 @@
 			getMultipleActivitiesOfAllUsers: $resource('api/activities/compare/:activityIds')
 		};
 	}
-}());
+]);

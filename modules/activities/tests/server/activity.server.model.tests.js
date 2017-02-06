@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-var should = require('should'),
+let should = require('should'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
   Activity = mongoose.model('Activity');
@@ -11,7 +11,7 @@ var should = require('should'),
 /**
  * Globals
  */
-var user,
+let user,
   activity;
 
 /**

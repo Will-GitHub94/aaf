@@ -1,7 +1,5 @@
-'use strict';
-
 angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', 'Menus',
-	function ($scope, $state, Authentication, Menus) {
+	($scope, $state, Authentication, Menus) => {
 		// Expose view variables
 		$scope.$state = $state;
 		$scope.authentication = Authentication;
@@ -11,12 +9,12 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
 
 		// Toggle the menu items
 		$scope.isCollapsed = false;
-		$scope.toggleCollapsibleMenu = function () {
+		$scope.toggleCollapsibleMenu = () => {
 			$scope.isCollapsed = !$scope.isCollapsed;
 		};
 
 		// Collapsing the menu after navigation
-		$scope.$on('$stateChangeSuccess', function () {
+		$scope.$on('$stateChangeSuccess', () => {
 			$scope.isCollapsed = false;
 		});
 	}

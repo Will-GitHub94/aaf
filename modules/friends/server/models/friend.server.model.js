@@ -3,13 +3,13 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
  * Friend Schema
  */
-var FriendSchema = new Schema({
+let FriendSchema = new Schema({
 	friend: {
 		type: Object,
 		default: ''

@@ -1,14 +1,10 @@
-'use strict';
-
 /**
  * Module dependencies
  */
-var path = require('path'),
+let path = require('path'),
   config = require(path.resolve('./config/config'));
 
 /**
  * Activities module init function.
  */
-module.exports = function (app, db) {
-
-};
+module.exports = (app, db) => {};

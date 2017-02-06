@@ -3,7 +3,7 @@
 
   describe('Friends Controller Tests', function () {
     // Initialize global variables
-    var FriendsController,
+    let FriendsController,
       $scope,
       $httpBackend,
       $state,
@@ -68,7 +68,7 @@
     }));
 
     describe('vm.save() as create', function () {
-      var sampleFriendPostData;
+      let sampleFriendPostData;
 
       beforeEach(function () {
         // Create a sample Friend object
@@ -94,7 +94,7 @@
       }));
 
       it('should set $scope.vm.error if error', function () {
-        var errorMessage = 'this is an error message';
+        let errorMessage = 'this is an error message';
         $httpBackend.expectPOST('api/friends', sampleFriendPostData).respond(400, {
           message: errorMessage
         });
@@ -127,7 +127,7 @@
       }));
 
       it('should set $scope.vm.error if error', inject(function (FriendsService) {
-        var errorMessage = 'error';
+        let errorMessage = 'error';
         $httpBackend.expectPUT(/api\/friends\/([0-9a-fA-F]{24})$/).respond(400, {
           message: errorMessage
         });

@@ -1,31 +1,66 @@
 <section>
     <div class="page-header">
-        <h1>{{vm.activity._id ? 'Edit Activity' : 'New Activity'}}</h1>
+        <h1>{{ activity._id ? 'Edit Activity' : 'New Activity' }}</h1>
     </div>
     <div class="col-md-12">
-        <form name="vm.form.activityForm" class="form-horizontal" ng-submit="vm.save(vm.form.activityForm.$valid)"
+        <form name="form.activityForm" class="form-horizontal" ng-submit="save(form.activityForm.$valid)"
               enctype="multipart/form-data" novalidate>
             <fieldset>
+                <div class="form-group" ng-if="!activity._id">
+                    <label for="gpxData" ng-class="{ 'disabled': gpxFileName }" class="btn btn-primary btn-file">Upload GPX
+                        <input type="file" nv-file-select name="gpxData" id="gpxData" ng-model="gpxData"
+                               uploader="uploader"
+                               onchange="angular.element(this).scope().setFileName()" hidden>
+                    </label>
+                    <span ng-if="gpxFileName" ng-bind="gpxFileName"></span>
+                </div>
+
                 <div class="form-group" show-errors>
                     <label class="control-label" for="name">Name</label>
-                    <input name="name" type="text" ng-model="vm.activity.name" id="name" class="form-control"
-                           placeholder="Name" required>
-                    <div ng-messages="vm.form.activityForm.name.$error" role="alert">
+                    <input name="name" type="text" ng-model="activity.name" id="name" class="form-control"
+                           ng-disabled="!gpxFileName" required>
+                    <div role="alert" class="alert alert-danger" ng-if="(activity.name === 'N/A') && (gpxFileName)">
+                        <p>This activity does not have a <strong>name</strong>. Please select one.</p>
+                    </div>
+                    <div ng-messages="form.activityForm.name.$error" role="alert">
                         <p class="help-block error-text" ng-message="required">Activity name is required.</p>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="gpxData"></label>
-                    <input type="file" nv-file-select name="gpxData" id="gpxData" ng-model="gpxData" uploader="vm.uploader">
-                    <!--<span class="progress" ng-show="gpxData.progress >= 0">-->
-                        <!--<div style="width: {{ gpxData.progress }}%" ng-bind="gpxData.progress + '%'"></div>-->
-                    <!--</span>-->
+
+                <div class="form-group" show-errors>
+                    <label class="control-label" for="type">Type</label>
+                    <select ng-options="type.name for type in activityTypes" ng-model="activityType" id="type"
+                            name="type" class="form-control"
+                            ng-disabled="!gpxFileName">
+                    </select>
+                    <div role="alert" class="alert alert-danger" ng-if="(activityType === 'N/A') && (gpxFileName)">
+                        <p>This activity does not have a <strong>type</strong>. Please select one.</p>
+                    </div>
+                    <div ng-messages="form.activityForm.type.$error" role="alert">
+                        <p class="help-block error-text" ng-message="required">Activity type is required.</p>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-default">{{vm.activity._id ? 'Update' : 'Create'}}</button>
+
+                <div class="form-group" show-errors>
+                    <label class="control-label" for="description">Description</label>
+                    <textarea name="description" ng-model="activity.description" id="description" class="form-control"
+                              placeholder="Description" ng-disabled="!gpxFileName"></textarea>
+                    <div role="alert" class="alert alert-warning"
+                         ng-if="(activity.description === 'N/A') && (gpxFileName)">
+                        <p>This activity does not have a <strong>description</strong>. Would you like to add one?</p>
+                    </div>
                 </div>
-                <div ng-show="vm.error" class="text-danger">
-                    <strong ng-bind="vm.error"></strong>
+
+                <div class="form-group" ng-if="gpxFileName">
+                    <label class="control-label" for="type">Preview</label>
+                    <div id="map" class="map-preview"></div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">{{ activity._id ? 'Update' : 'Create' }}</button>
+                </div>
+                <div ng-show="error" class="text-danger">
+                    <strong ng-bind="error"></strong>
                 </div>
             </fieldset>
         </form>

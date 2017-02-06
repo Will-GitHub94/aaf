@@ -1,13 +1,5 @@
-(function () {
-	'use strict';
-
-	angular
-		.module('activities')
-		.run(menuConfig);
-
-	menuConfig.$inject = ['Menus'];
-
-	function menuConfig(menuService) {
+angular.module('activities').run(['Menus',
+	(menuService) => {
 		// Set top bar menu items
 		menuService.addMenuItem('topbar', {
 			title: 'Activities',
@@ -29,4 +21,4 @@
 			roles: ['user']
 		});
 	}
-}());
+]);

@@ -1,6 +1,6 @@
 'use strict';
 
-var should = require('should'),
+let should = require('should'),
   request = require('supertest'),
   path = require('path'),
   mongoose = require('mongoose'),
@@ -11,7 +11,7 @@ var should = require('should'),
 /**
  * Globals
  */
-var app,
+let app,
   agent,
   credentials,
   user,
@@ -69,7 +69,7 @@ describe('Activity CRUD tests', function () {
         }
 
         // Get the userId
-        var userId = user.id;
+        let userId = user.id;
 
         // Save a new Activity
         agent.post('/api/activities')
@@ -90,7 +90,7 @@ describe('Activity CRUD tests', function () {
                 }
 
                 // Get Activities list
-                var activities = activitiesGetRes.body;
+                let activities = activitiesGetRes.body;
 
                 // Set assertions
                 (activities[0].user._id).should.equal(userId);
@@ -127,7 +127,7 @@ describe('Activity CRUD tests', function () {
         }
 
         // Get the userId
-        var userId = user.id;
+        let userId = user.id;
 
         // Save a new Activity
         agent.post('/api/activities')
@@ -154,7 +154,7 @@ describe('Activity CRUD tests', function () {
         }
 
         // Get the userId
-        var userId = user.id;
+        let userId = user.id;
 
         // Save a new Activity
         agent.post('/api/activities')
@@ -192,7 +192,7 @@ describe('Activity CRUD tests', function () {
 
   it('should be able to get a list of Activities if not signed in', function (done) {
     // Create new Activity model instance
-    var activityObj = new Activity(activity);
+    let activityObj = new Activity(activity);
 
     // Save the activity
     activityObj.save(function () {
@@ -211,7 +211,7 @@ describe('Activity CRUD tests', function () {
 
   it('should be able to get a single Activity if not signed in', function (done) {
     // Create new Activity model instance
-    var activityObj = new Activity(activity);
+    let activityObj = new Activity(activity);
 
     // Save the Activity
     activityObj.save(function () {
@@ -261,7 +261,7 @@ describe('Activity CRUD tests', function () {
         }
 
         // Get the userId
-        var userId = user.id;
+        let userId = user.id;
 
         // Save a new Activity
         agent.post('/api/activities')
@@ -298,7 +298,7 @@ describe('Activity CRUD tests', function () {
     activity.user = user;
 
     // Create new Activity model instance
-    var activityObj = new Activity(activity);
+    let activityObj = new Activity(activity);
 
     // Save the Activity
     activityObj.save(function () {
@@ -318,13 +318,13 @@ describe('Activity CRUD tests', function () {
 
   it('should be able to get a single Activity that has an orphaned user reference', function (done) {
     // Create orphan user creds
-    var _creds = {
+    let _creds = {
       username: 'orphan',
       password: 'M3@n.jsI$Aw3$0m3'
     };
 
     // Create orphan user
-    var _orphan = new User({
+    let _orphan = new User({
       firstName: 'Full',
       lastName: 'Name',
       displayName: 'Full Name',
@@ -350,7 +350,7 @@ describe('Activity CRUD tests', function () {
           }
 
           // Get the userId
-          var orphanId = orphan._id;
+          let orphanId = orphan._id;
 
           // Save a new Activity
           agent.post('/api/activities')

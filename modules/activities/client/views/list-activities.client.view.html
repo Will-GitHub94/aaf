@@ -10,14 +10,14 @@
             <option value="name">Alphabetical</option>
             <option value="age">Newest</option>
         </select>
-        <a class="btn btn-default btn-lg" ng-click="vm.toggleWantToCompare()"
-           ng-class="{ 'disabled': vm.wantToCompare}">Allow Compare</a>
-        <a class="btn btn-danger btn-lg" ng-click="vm.toggleWantToCompare()"
-           ng-class="{ 'disabled': !vm.wantToCompare}">Disallow Compare</a>
-        <a class="btn btn-primary btn-lg" ng-class="{ 'disabled': !vm.wantToCompare }" ng-click="vm.compare()">Compare</a>
+        <a class="btn btn-default btn-lg" ng-click="wantToCompare = !wantToCompare"
+           ng-class="{ 'disabled': wantToCompare}">Allow Compare</a>
+        <a class="btn btn-danger btn-lg" ng-click="wantToCompare = !wantToCompare"
+           ng-class="{ 'disabled': !wantToCompare}">Disallow Compare</a>
+        <a class="btn btn-primary btn-lg" ng-class="{ 'disabled': !wantToCompare }" ng-click="compare()">Compare</a>
     </div>
     <div id="activitiesList" class="list-group">
-        <div ng-repeat="activity in vm.activities | filter:$ctrl.query | orderBy:$ctrl.orderProp"
+        <div ng-repeat="activity in activities | filter:$ctrl.query | orderBy:$ctrl.orderProp"
            class="list-group-item">
             <a ui-sref="activities.view({ activityId: activity._id })">
                 <small class="list-group-item-text">
@@ -29,12 +29,12 @@
                 </small>
                 <h4 class="list-group-item-heading" ng-bind="activity.name"></h4>
             </a>
-            <input ng-if="vm.wantToCompare" ng-model="activity.wantsToCompare"
-                   ng-click="vm.toggleActivityToCompare(activity._id, activity.wantsToCompare)"
+            <input ng-if="wantToCompare" ng-model="activity.wantsToCompare"
+                   ng-click="toggleActivityToCompare(activity._id, activity.wantsToCompare)"
                    ng-checked="activity.wantsToCompare" class="pull-right" type="checkbox">
         </div>
     </div>
-    <div class="alert alert-warning text-center" ng-if="vm.activities.$resolved && !vm.activities.length">
+    <div class="alert alert-warning text-center" ng-if="activities.$resolved && !activities.length">
         No Activities yet, why don't you <a ui-sref="activities.create">create one</a>?
     </div>
 </section>

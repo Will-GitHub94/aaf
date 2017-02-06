@@ -1,5 +1,3 @@
-(function (app) {
-	'use strict';
-
+((app) => {
 	app.registerModule('friends');
-}(ApplicationConfiguration));
+})(ApplicationConfiguration);

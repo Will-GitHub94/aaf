@@ -1,13 +1,5 @@
-(function () {
-	'use strict';
-
-	angular
-		.module('friends')
-		.run(menuConfig);
-
-	menuConfig.$inject = ['Menus'];
-
-	function menuConfig(menuService) {
+angular.module('friends').run(['Menus',
+	(menuService) => {
 		// Set top bar menu items
 		menuService.addMenuItem('topbar', {
 			title: 'Friends',
@@ -29,4 +21,4 @@
 			roles: ['user']
 		});
 	}
-}());
+]);

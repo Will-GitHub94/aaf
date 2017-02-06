@@ -1,10 +1,10 @@
 <section>
-    <div ng-repeat="activity in vm.activities">
+    <div ng-repeat="activity in activities">
         <div class="page-header">
             <h1 ng-bind="activity.name"></h1>
         </div>
         <div>
-            <div id="map" class="map"></div>
+            <div class="map" id="{{ activity._id }}"></div>
         </div>
         <small>
             <em class="text-muted">
@@ -16,5 +16,19 @@
                 <span ng-if="!activity.user">Deleted User</span>
             </em>
         </small>
+
+        <div class="list-group" ng-show="activity.comments.length > 0">
+            <div class="list-group-item" ng-repeat="comment in activity.comments">
+                <small>
+                    <em class="text-muted">
+                        Posted on
+                        <span ng-bind="comment.added | date:'mediumDate'"></span>
+                        by
+                        <span ng-bind="comment.user.displayName"></span>
+                    </em>
+                </small>
+                <h4 class="list-group-item-heading" ng-bind="comment.comment"></h4>
+            </div>
+        </div>
     </div>
 </section>

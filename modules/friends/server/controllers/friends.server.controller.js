@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-var path = require('path'),
+let path = require('path'),
 	mongoose = require('mongoose'),
 	Friend = mongoose.model('Friend'),
 	User = mongoose.model('User'),
@@ -14,7 +14,7 @@ var path = require('path'),
  * Add a Friend
  */
 exports.add = function (req, res) {
-	var friend = new Friend(req.body);
+	let friend = new Friend(req.body);
 	friend.user = req.user;
 
 	friend.save(function (err) {
@@ -34,7 +34,7 @@ exports.add = function (req, res) {
 exports.read = function (req, res) {
 	console.log(req.params);
 	// convert mongoose document to JSON
-	var friend = req.friend ? req.friend.toJSON() : {};
+	let friend = req.friend ? req.friend.toJSON() : {};
 
 	// Add a custom field to the Article, for determining if the current User is the "owner".
 	// NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
@@ -47,7 +47,7 @@ exports.read = function (req, res) {
  * Update a Friend
  */
 exports.update = function (req, res) {
-	var friend = req.friend;
+	let friend = req.friend;
 
 	friend = _.extend(friend, req.body);
 
@@ -66,7 +66,7 @@ exports.update = function (req, res) {
  * Delete an Friend
  */
 exports.delete = function (req, res) {
-	var friend = req.friend;
+	let friend = req.friend;
 
 	friend.remove(function (err) {
 		if (err) {
@@ -95,7 +95,7 @@ exports.list = function (req, res) {
 };
 
 exports.usersFriends = function(req, res) {
-	var userId = req.params.userId;
+	let userId = req.params.userId;
 
 	Friend.find({
 		user: mongoose.Types.ObjectId(userId)

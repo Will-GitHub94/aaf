@@ -1,14 +1,10 @@
-'use strict';
-
 /**
  * Module dependencies
  */
-var activitiesPolicy = require('../policies/activities.server.policy'),
+let activitiesPolicy = require('../policies/activities.server.policy'),
 	activities = require('../controllers/activities.server.controller');
-	// multiparty = require('connect-multiparty'),
-	// multipartyMiddleware = multiparty();
 
-module.exports = function (app) {
+module.exports = (app) => {
 	// Activities Routes
 	app.route('/api/activities/gpxData').all(activitiesPolicy.isAllowed)
 		.post(activities.uploadGpx);

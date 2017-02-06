@@ -1,7 +1,4 @@
-'use strict';
-
-angular.module('core.admin').run(['Menus',
-  function (Menus) {
+angular.module('core.admin').run(['Menus', (Menus) => {
     Menus.addMenuItem('topbar', {
       title: 'Admin',
       state: 'admin',

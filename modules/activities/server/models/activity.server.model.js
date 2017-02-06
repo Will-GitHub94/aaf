@@ -3,13 +3,13 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
  * Activity Schema
  */
-var ActivitySchema = new Schema({
+let ActivitySchema = new Schema({
 	name: {
 		type: String,
 		default: '',
@@ -35,6 +35,15 @@ var ActivitySchema = new Schema({
 	sharedWith: {
 		type: Array,
 		default: []
+	},
+	type: {
+		type: String,
+		default: 'N/A',
+		required: 'Please select an activity type'
+	},
+	description: {
+		type: String,
+		default: 'N/A'
 	}
 });
 
