@@ -7,7 +7,7 @@
               enctype="multipart/form-data" novalidate>
             <fieldset>
                 <div class="form-group" ng-if="!activity._id">
-                    <label for="gpxData" ng-class="{ 'disabled': gpxFileName }" class="btn btn-primary btn-file">Upload GPX
+                    <label for="gpxData" ng-class="{ 'disabled': gpxFileName }" class="btn btn-primary btn-file">Choose GPX
                         <input type="file" nv-file-select name="gpxData" id="gpxData" ng-model="gpxData"
                                uploader="uploader"
                                onchange="angular.element(this).scope().setFileName()" hidden>
@@ -18,7 +18,7 @@
                 <div class="form-group" show-errors>
                     <label class="control-label" for="name">Name</label>
                     <input name="name" type="text" ng-model="activity.name" id="name" class="form-control"
-                           ng-disabled="!gpxFileName" required>
+                           ng-disabled="!activity._id && !gpxFileName" required>
                     <div role="alert" class="alert alert-danger" ng-if="(activity.name === 'N/A') && (gpxFileName)">
                         <p>This activity does not have a <strong>name</strong>. Please select one.</p>
                     </div>
@@ -31,7 +31,7 @@
                     <label class="control-label" for="type">Type</label>
                     <select ng-options="type.name for type in activityTypes" ng-model="activityType" id="type"
                             name="type" class="form-control"
-                            ng-disabled="!gpxFileName">
+                            ng-disabled="!activity._id && !gpxFileName">
                     </select>
                     <div role="alert" class="alert alert-danger" ng-if="(activityType === 'N/A') && (gpxFileName)">
                         <p>This activity does not have a <strong>type</strong>. Please select one.</p>
@@ -44,7 +44,7 @@
                 <div class="form-group" show-errors>
                     <label class="control-label" for="description">Description</label>
                     <textarea name="description" ng-model="activity.description" id="description" class="form-control"
-                              placeholder="Description" ng-disabled="!gpxFileName"></textarea>
+                              placeholder="Description" ng-disabled="!activity._id && !gpxFileName"></textarea>
                     <div role="alert" class="alert alert-warning"
                          ng-if="(activity.description === 'N/A') && (gpxFileName)">
                         <p>This activity does not have a <strong>description</strong>. Would you like to add one?</p>

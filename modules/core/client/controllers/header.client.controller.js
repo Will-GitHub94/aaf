@@ -3,6 +3,7 @@
 angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', 'Menus',
 	function($scope, $state, Authentication, Menus) {
 		// Expose view variables
+
 		$scope.$state = $state;
 		$scope.authentication = Authentication;
 
@@ -19,5 +20,13 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
 		$scope.$on('$stateChangeSuccess', function() {
 			$scope.isCollapsed = false;
 		});
+
+		$scope.checkAuth = function() {
+			if (Authentication.user._id) {
+				$state.go("activities.list");
+			} else {
+				$state.go("home");
+			}
+		};
 	}
 ]);
