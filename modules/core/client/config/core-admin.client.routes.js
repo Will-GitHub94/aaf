@@ -1,5 +1,7 @@
+"use strict";
+
 // Setting up route
-angular.module('core.admin.routes').config(['$stateProvider', ($stateProvider) => {
+angular.module('core.admin.routes').config(['$stateProvider', function($stateProvider) {
 	$stateProvider
 		.state('admin', {
 			abstract: true,

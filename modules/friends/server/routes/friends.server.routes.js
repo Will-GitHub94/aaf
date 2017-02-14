@@ -3,7 +3,7 @@
 /**
  * Module dependencies
  */
-let friendsPolicy = require('../policies/friends.server.policy'),
+var friendsPolicy = require('../policies/friends.server.policy'),
 	friends = require('../controllers/friends.server.controller');
 
 module.exports = function (app) {

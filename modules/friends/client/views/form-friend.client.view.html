@@ -1,13 +1,17 @@
-<section>
+<section ng-init="setBodyImage()">
     <div class="page-header">
         <h1>Add Friend</h1>
     </div>
-    <div class="list-group">
-        <a ng-repeat="user in vm.users" ng-click="vm.save(user)" class="list-group-item">
+    <div class="list-group" ng-if="users.length > 0">
+        <a ng-repeat="user in users" ng-click="save(user)" class="list-group-item">
             <img class="friend-user-profile-picture" ng-src="{{ user.profileImageURL }}" alt="{{ user.displayName }}">
             <h4 class="list-group-item-heading" ng-bind="user.displayName"></h4>
             <small class="list-group-item-text" ng-bind="user.username"></small>
             <p class="list-group-item-text" ng-bind="user.email"></p>
         </a>
+    </div>
+    <div class="alert alert-danger text-center" ng-if="users.length === 0">
+        There are currently no other users logged in the system so you are unable to add anyone as a friend.
+        Check back later
     </div>
 </section>

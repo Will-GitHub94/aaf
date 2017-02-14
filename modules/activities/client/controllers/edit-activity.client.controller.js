@@ -2,7 +2,10 @@
 
 // Activities edit controller
 angular.module('activities').controller('ActivitiesEditController', ['$scope', '$state', '$window', 'Authentication', 'activityResolve',
-	($scope, $state, $window, Authentication, activity) => {
+	function($scope, $state, $window, Authentication, activity) {
+		var bodyStyle = document.getElementById("body").style,
+			activitiesBackgroundPath = "/modules/activities/client/img/backgrounds/";
+
 		$scope.activity = activity;
 		$scope.authentication = Authentication;
 		$scope.error = null;
@@ -18,27 +21,31 @@ angular.module('activities').controller('ActivitiesEditController', ['$scope', '
 			name: "Swim"
 		}];
 
-		$scope.save = (isValid) => {
+		$scope.setBodyImage = function() {
+			bodyStyle.backgroundImage = "url('" + activitiesBackgroundPath + "climbing.jpg')";
+		};
+
+		$scope.save = function(isValid) {
 			if (!isValid) {
 				$scope.$broadcast('show-errors-check-validity', 'vm.form.activityForm');
 				return false;
 			}
 			$scope.activity.comments = $scope.comments;
 
-			let successCallback = (res) => {
+			var successCallback = function(res) {
 				$state.go('activities.view', {
 					activityId: res._id
 				});
 			};
 
-			let errorCallback = (res) => {
+			var errorCallback = function(res) {
 				$scope.error = res.data.message;
 			};
 			$scope.activity.$update(successCallback, errorCallback);
 
 		};
 
-		$scope.addComment = (isValid) => {
+		$scope.addComment = function(isValid) {
 			if (!isValid) {
 				$scope.$broadcast('show-errors-check-validity', 'form.activityForm');
 				return false;

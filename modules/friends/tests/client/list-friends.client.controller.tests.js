@@ -3,7 +3,7 @@
 
   describe('Friends List Controller Tests', function () {
     // Initialize global variables
-    let FriendsListController,
+    var FriendsListController,
       $scope,
       $httpBackend,
       $state,
@@ -67,7 +67,7 @@
     }));
 
     describe('Instantiate', function () {
-      let mockFriendList;
+      var mockFriendList;
 
       beforeEach(function () {
         mockFriendList = [mockFriend, mockFriend];

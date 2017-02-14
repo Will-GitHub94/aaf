@@ -1,7 +1,19 @@
+"use strict";
+
 // Friends controller
-angular.module('friends').controller('FriendsController', ['$scope', '$state', '$window', 'Authentication', 'friendResolve', 'UsersService',
-	($scope, $state, $window, Authentication, friend, UsersService) => {
-		$scope.users = UsersService.query();
+angular.module('friends').controller('FriendsController', ['$scope', '$state', '$window', 'Authentication', 'friendResolve', 'FriendsService',
+	function($scope, $state, $window, Authentication, friend, FriendsService) {
+		var bodyStyle = document.getElementById("body").style,
+			friendsBackgroundPath = "/modules/friends/client/img/backgrounds/";
+
+		$scope.users = [];
+		FriendsService.getAllUsers.query(function(data) {
+			data.forEach(function(user) {
+				if (user._id !== Authentication.user._id) {
+					$scope.users.push(user);
+				}
+			});
+		});
 
 		$scope.authentication = Authentication;
 
@@ -10,23 +22,27 @@ angular.module('friends').controller('FriendsController', ['$scope', '$state', '
 		$scope.friend = friend;
 		$scope.error = null;
 		$scope.form = {};
-		$scope.remove = () => {
+		$scope.remove = function() {
 			if ($window.confirm('Are you sure you want to delete?')) {
-				vm.friend.$remove($state.go('friends.list'));
+				$scope.friend.$remove($state.go('friends.list'));
 			}
 		};
 
-		$scope.save = (user) => {
-			let successCallback = (res) => {
+		$scope.save = function(user) {
+			var successCallback = function(res) {
 				$state.go('friends.list');
 			};
 
-			let errorCallback = (res) => {
+			var errorCallback = function(res) {
 				$scope.error = res.data.message;
 			};
 
 			$scope.friend.friend = user;
 			$scope.friend.$save(successCallback, errorCallback);
+		};
+
+		$scope.setBodyImage = function() {
+			bodyStyle.backgroundImage = "url('" + friendsBackgroundPath + "running.jpg')";
 		};
 	}
 ]);

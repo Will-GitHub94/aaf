@@ -1,7 +1,21 @@
 'use strict';
 
-angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator',
-	function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator) {
+angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator', '$rootScope',
+	function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, $rootScope) {
+		var bodyStyle = document.getElementById("body").style,
+			usersBackgroundPath = "/modules/users/client/img/backgrounds/";
+
+		$scope.setBodyImage = function (page) {
+			switch (page) {
+				case "signin":
+					bodyStyle.backgroundImage = "url('" + usersBackgroundPath + "yoga.jpg')";
+					break;
+				case "signup":
+					bodyStyle.backgroundImage = "url('" + usersBackgroundPath + "cricket.jpg')";
+					break;
+			}
+		};
+
 		$scope.authentication = Authentication;
 		$scope.popoverMsg = PasswordValidator.getPopoverMsg();
 

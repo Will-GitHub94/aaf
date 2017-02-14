@@ -1,10 +1,12 @@
+"use strict";
+
 /**
  * Module dependencies
  */
-let activitiesPolicy = require('../policies/activities.server.policy'),
+var activitiesPolicy = require('../policies/activities.server.policy'),
 	activities = require('../controllers/activities.server.controller');
 
-module.exports = (app) => {
+module.exports = function(app) {
 	// Activities Routes
 	app.route('/api/activities/gpxData').all(activitiesPolicy.isAllowed)
 		.post(activities.uploadGpx);
@@ -32,5 +34,5 @@ module.exports = (app) => {
 
 	// Finish by binding the Activity middleware
 	app.param('activityId', activities.activityByID);
-	app.param('activityIds', activities.activitiesByID)
+	app.param('activityIds', activities.activitiesByID);
 };

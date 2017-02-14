@@ -1,22 +1,22 @@
 'use strict';
 
 angular.module('activities').config(['$stateProvider',
-	($stateProvider) => {
+	function($stateProvider) {
 
-		let getSingleActivity = ['$stateParams', 'ActivitiesService', ($stateParams, ActivitiesService) => {
+		var getSingleActivity = ['$stateParams', 'ActivitiesService', function($stateParams, ActivitiesService) {
 			return ActivitiesService.getActivitiesOfCurrentUser.get({
 				activityId: $stateParams.activityId
 			}).$promise;
 		}];
 
-		let newActivity = ['ActivitiesService', (ActivitiesService) => {
+		var newActivity = ['ActivitiesService', function(ActivitiesService) {
 			return new ActivitiesService.getActivitiesOfAllUsers;
 		}];
 
-		let getMultipleActivities = ['$stateParams', 'ActivitiesService', ($stateParams, ActivitiesService) => {
+		var getMultipleActivities = ['$stateParams', 'ActivitiesService', function($stateParams, ActivitiesService) {
 			return ActivitiesService.getMultipleActivitiesOfAllUsers.query({
 				activityIds: $stateParams.activityIds
-			}).$promise
+			}).$promise;
 		}];
 
 		$stateProvider

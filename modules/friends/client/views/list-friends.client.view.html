@@ -1,16 +1,16 @@
-<section>
+<section ng-init="setBodyImage()">
     <div class="page-header">
         <h1>Friends</h1>
     </div>
-    <div class="list-group">
-        <a ng-repeat="friend in vm.friends" class="list-group-item">
+    <div class="list-group" ng-if="friends.length > 0">
+        <a ng-repeat="friend in friends" class="list-group-item">
             <img class="friend-user-profile-picture" ng-src="{{ friend.friend.profileImageURL }}" alt="{{ friend.friend.displayName }}">
             <h4 class="list-group-item-heading" ng-bind="friend.friend.displayName"></h4>
             <small class="list-group-item-text" ng-bind="friend.friend.username"></small>
             <p class="list-group-item-text" ng-bind="friend.friend.email"></p>
         </a>
     </div>
-    <div class="alert alert-warning text-center" ng-if="vm.friends.$resolved && !vm.friends.length">
+    <div class="alert alert-warning text-center" ng-if="friends.length === 0">
         No Friends yet, why don't you <a ui-sref="friends.add">add one</a>?
     </div>
 </section>

@@ -43,3 +43,51 @@ a:hover .header-profile-image {
     width: 300px;
     cursor: pointer;
 }
+
+body {
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+section .container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    margin-top: 200px;
+    box-shadow: 0 10px 6px -6px #777;
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------
+   ACTIVITIES
+   ---------------------------------------------------------------------------------------------------------------------
+ */
+
+.activityDescription,
+.activityDistCovered,
+.activityType {
+    font-size: 30px;
+    font-style: italic;
+    font-weight: 800;
+    color: #999999;
+    text-align: justify;
+}
+
+.activitiesList,
+.commentsList {
+    margin: 20px 0 20px 0;
+}
+
+.activitiesList a {
+    text-decoration: none;
+}
+
+.activitiesList h3 {
+    color: #000;
+}
+
+.noPadLeft {
+    padding-left: 0 !important;
+}
+
+.noPadRight {
+    padding-right: 0 !important;
+}

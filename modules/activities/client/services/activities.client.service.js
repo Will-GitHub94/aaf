@@ -1,5 +1,7 @@
+"use strict";
+
 angular.module('activities').factory('ActivitiesService', ['$resource', 'Authentication',
-	($resource, Authentication) => {
+	function($resource, Authentication) {
 		return {
 			getActivitiesOfCurrentUser: $resource('api/:userId/activities/:activityId', {
 				userId: Authentication.user._id,

@@ -1,6 +1,8 @@
+"use strict";
+
 // Setting up route
 angular.module('core').config(['$stateProvider', '$urlRouterProvider',
-	($stateProvider, $urlRouterProvider) => {
+	function($stateProvider, $urlRouterProvider) {
 
 		// Redirect to 404 when route not found
 		$urlRouterProvider.otherwise(($injector, $location) => {

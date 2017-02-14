@@ -34,10 +34,10 @@ module.exports = {
   		dest: './modules/activities/client/gpxData/',
 	    storage: {
   			destination: function(req, file, callback) {
-  				callback(null, './modules/activities/client/gpxData/')
+  				callback(null, './modules/activities/client/gpxData/');
 		    },
 		    filename: function (req, file, callback) {
-			    callback(null, file.originalname)
+			    callback(null, file.originalname);
 		    }
 	    }
     },

@@ -3,65 +3,70 @@
 /**
  * Module dependencies.
  */
-let should = require('should'),
-  mongoose = require('mongoose'),
-  User = mongoose.model('User'),
-  Activity = mongoose.model('Activity');
+var should = require('should'),
+	mongoose = require('mongoose'),
+	User = mongoose.model('User'),
+	Activity = mongoose.model('Activity');
 
 /**
  * Globals
  */
-let user,
-  activity;
+var user,
+	activity;
 
 /**
  * Unit tests
  */
-describe('Activity Model Unit Tests:', function() {
-  beforeEach(function(done) {
-    user = new User({
-      firstName: 'Full',
-      lastName: 'Name',
-      displayName: 'Full Name',
-      email: 'test@test.com',
-      username: 'username',
-      password: 'password'
-    });
+describe('Activity Model Unit Tests:', function () {
+	beforeEach(function (done) {
+		user = new User({
+			firstName: 'Full',
+			lastName: 'Name',
+			displayName: 'Full Name',
+			email: 'test@test.com',
+			username: 'username',
+			password: 'password'
+		});
 
-    user.save(function() {
-      activity = new Activity({
-        name: 'Activity Name',
-        user: user
-      });
+		user.save(function () {
+			activity = new Activity({
+				name: 'Activity Name',
+				user: user,
+				comments: ["Activity Comment"],
+				gpxData: 'Activity GPXData',
+				sharedWith: ["1234"],
+				type: 'Activity Type',
+				description: 'Activity Description'
+			});
 
-      done();
-    });
-  });
+			done();
+		});
+	});
 
-  describe('Method Save', function() {
-    it('should be able to save without problems', function(done) {
-      this.timeout(0);
-      return activity.save(function(err) {
-        should.not.exist(err);
-        done();
-      });
-    });
+	describe('Method Save', function () {
+		it('should be able to save without problems', function (done) {
+			this.timeout(0);
+			return activity.save(function (err) {
+				should.not.exist(err);
+				done();
+			});
+		});
 
-    it('should be able to show an error when try to save without name', function(done) {
-      activity.name = '';
+		it('should be able to show an error when try to save without name', function (done) {
+			activity.name = '';
 
-      return activity.save(function(err) {
-        should.exist(err);
-        done();
-      });
-    });
-  });
+			return activity.save(function (err) {
+				should.exist(err);
+				done();
+			});
+		});
+	});
 
-  afterEach(function(done) {
-    Activity.remove().exec(function() {
-      User.remove().exec(function() {
-        done();
-      });
-    });
-  });
+	afterEach(function (done) {
+		Activity.remove().exec(function () {
+			User.remove().exec(function () {
+				done();
+			});
+		});
+	});
 });

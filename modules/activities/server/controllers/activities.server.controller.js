@@ -1,7 +1,9 @@
+"use strict";
+
 /**
  * Module dependencies.
  */
-let path = require('path'),
+var path = require('path'),
 	mongoose = require('mongoose'),
 	Activity = mongoose.model('Activity'),
 	errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
@@ -13,11 +15,11 @@ let path = require('path'),
 /**
  * Gets the data from the GPX file the activity uses
  */
-let addGpxDataAndCurrentUserToActivity = (activity, user, callback) => {
-	let filename = activity.gpxData,
+var addGpxDataAndCurrentUserToActivity = function(activity, user, callback) {
+	var filename = activity.gpxData,
 		gpxDataFile = path.join(__dirname, "../../client/gpxData", filename);
 
-	fs.readFile(gpxDataFile, "utf-8", (err, data) => {
+	fs.readFile(gpxDataFile, "utf-8", function(err, data) {
 		activity.gpxData = {
 			filename: filename,
 			data: data
@@ -30,11 +32,11 @@ let addGpxDataAndCurrentUserToActivity = (activity, user, callback) => {
 /**
  * Create a Activity
  */
-exports.create = (req, res) => {
-	let activity = new Activity(req.body);
+exports.create = function(req, res) {
+	var activity = new Activity(req.body);
 	activity.user = req.user;
 
-	activity.save((err) => {
+	activity.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -48,10 +50,10 @@ exports.create = (req, res) => {
 /**
  * Show the current Activity
  */
-exports.read = (req, res) => {
-	let activity = req.activity ? req.activity.toJSON() : {};
+exports.read = function(req, res) {
+	var activity = req.activity ? req.activity.toJSON() : {};
 
-	addGpxDataAndCurrentUserToActivity(activity, req.user, (activity) => {
+	addGpxDataAndCurrentUserToActivity(activity, req.user, function(activity) {
 		res.jsonp(activity);
 	});
 };
@@ -59,16 +61,16 @@ exports.read = (req, res) => {
 /**
  * Shows the activities wanting to be compared
  */
-exports.readMultiple = (req, res) => {
-	let activities = [],
+exports.readMultiple = function(req, res) {
+	var activities = [],
 		manipulatedActivities = [];
 
-	req.activities.forEach((activity) => {
+	req.activities.forEach(function(activity) {
 		activities.push(activity.toJSON());
 	});
 
-	activities.forEach((activity) => {
-		addGpxDataAndCurrentUserToActivity(activity, req.user, (manipulatedActivity) => {
+	activities.forEach(function(activity) {
+		addGpxDataAndCurrentUserToActivity(activity, req.user, function(manipulatedActivity) {
 			manipulatedActivities.push(manipulatedActivity);
 
 			if (activities.length === manipulatedActivities.length) {
@@ -81,12 +83,12 @@ exports.readMultiple = (req, res) => {
 /**
  * Update a Activity
  */
-exports.update = (req, res) => {
-	let activity = req.activity;
+exports.update = function(req, res) {
+	var activity = req.activity;
 
 	activity = _.extend(activity, req.body);
 
-	activity.save((err) => {
+	activity.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -100,10 +102,10 @@ exports.update = (req, res) => {
 /**
  * Delete an Activity
  */
-exports.delete = (req, res) => {
-	let activity = req.activity;
+exports.delete = function(req, res) {
+	var activity = req.activity;
 
-	activity.remove((err) => {
+	activity.remove(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -117,8 +119,8 @@ exports.delete = (req, res) => {
 /**
  * List of Activities
  */
-exports.list = (req, res) => {
-	Activity.find().sort('-created').populate('user', 'displayName').exec((err, activities) => {
+exports.list = function(req, res) {
+	Activity.find().sort('-created').populate('user', 'displayName').exec(function(err, activities) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -129,16 +131,16 @@ exports.list = (req, res) => {
 	});
 };
 
-exports.usersActivities = (req, res) => {
-	let userId = req.params.userId;
+exports.usersActivities = function(req, res) {
+	var userId = req.params.userId;
 
 	Activity.find({
 		user: mongoose.Types.ObjectId(userId)
-	}).populate("user", "displayName").exec((err, activities) => {
+	}).populate("user", "displayName").exec(function(err, activities) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
-			})
+			});
 		} else {
 			res.jsonp(activities);
 		}
@@ -148,14 +150,14 @@ exports.usersActivities = (req, res) => {
 /**
  * Activity middleware
  */
-exports.activityByID = (req, res, next, id) => {
+exports.activityByID = function(req, res, next, id) {
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		return res.status(400).send({
 			message: 'Activity is invalid'
 		});
 	}
 
-	Activity.findById(id).populate('user', 'displayName').exec((err, activity) => {
+	Activity.findById(id).populate('user', 'displayName').exec(function(err, activity) {
 		if (err) {
 			return next(err);
 		} else if (!activity) {
@@ -168,8 +170,8 @@ exports.activityByID = (req, res, next, id) => {
 	});
 };
 
-exports.activitiesByID = (req, res, next, ids) => {
-	let activityIds = _.map(ids.split(','), (activityId) => {
+exports.activitiesByID = function(req, res, next, ids) {
+	var activityIds = _.map(ids.split(','), function(activityId) {
 		if (!mongoose.Types.ObjectId.isValid(activityId)) {
 			// handle error
 		}
@@ -178,7 +180,7 @@ exports.activitiesByID = (req, res, next, ids) => {
 
 	Activity.find({ _id: {
 		$in: activityIds
-	}}).sort('-created').populate('user', 'displayName').exec((err, activities) => {
+	}}).sort('-created').populate('user', 'displayName').exec(function(err, activities) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -190,13 +192,13 @@ exports.activitiesByID = (req, res, next, ids) => {
 	});
 };
 
-exports.uploadGpx = (req, res) => {
-	let storage = multer.diskStorage(config.uploads.gpxUpload.storage),
+exports.uploadGpx = function(req, res) {
+	var storage = multer.diskStorage(config.uploads.gpxUpload.storage),
 		upload = multer({
 			storage: storage
 		}).single('gpxData');
 
-	upload(req, res, (err) => {
+	upload(req, res, function(err) {
 		if (err) {
 			console.log(err);
 		}

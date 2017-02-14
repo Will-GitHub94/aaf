@@ -1,5 +1,7 @@
+"use strict";
+
 angular.module('friends').run(['Menus',
-	(menuService) => {
+	function(menuService) {
 		// Set top bar menu items
 		menuService.addMenuItem('topbar', {
 			title: 'Friends',

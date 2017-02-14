@@ -3,7 +3,7 @@
 /**
  * Module dependencies
  */
-let acl = require('acl');
+var acl = require('acl');
 
 // Using the memory backend
 acl = new acl(new acl.memoryBackend());
@@ -15,7 +15,10 @@ exports.invokeRolesPolicies = function () {
 	acl.allow([{
 		roles: ['admin'],
 		allows: [{
-			resources: '/api/friends',
+			resources: '/api/:userId/friends',
+			permissions: '*'
+		}, {
+			resources: '/api/:userId/friends/:friendId',
 			permissions: '*'
 		}, {
 			resources: '/api/friends/:friendId',
@@ -40,7 +43,7 @@ exports.invokeRolesPolicies = function () {
  * Check If Friends Policy Allows
  */
 exports.isAllowed = function (req, res, next) {
-	let roles = (req.user) ? req.user.roles : ['guest'];
+	var roles = (req.user) ? req.user.roles : ['guest'];
 
 	// If an Friend is being processed and the current user created it then allow any manipulation
 	if (req.friend && req.user && req.friend.user && req.friend.user.id === req.user.id) {

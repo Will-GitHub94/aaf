@@ -3,7 +3,7 @@
 /**
  * Module dependencies
  */
-let path = require('path'),
+var path = require('path'),
   config = require(path.resolve('./config/config'));
 
 /**

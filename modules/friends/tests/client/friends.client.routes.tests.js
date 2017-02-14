@@ -3,7 +3,7 @@
 
   describe('Friends Route Tests', function () {
     // Initialize global variables
-    let $scope,
+    var $scope,
       FriendsService;
 
     // We can start by loading the main application module
@@ -20,7 +20,7 @@
 
     describe('Route Config', function () {
       describe('Main Route', function () {
-        let mainstate;
+        var mainstate;
         beforeEach(inject(function ($state) {
           mainstate = $state.get('friends');
         }));
@@ -39,7 +39,7 @@
       });
 
       describe('View Route', function () {
-        let viewstate,
+        var viewstate,
           FriendsController,
           mockFriend;
 
@@ -89,7 +89,7 @@
       });
 
       describe('Create Route', function () {
-        let createstate,
+        var createstate,
           FriendsController,
           mockFriend;
 
@@ -135,7 +135,7 @@
       });
 
       describe('Edit Route', function () {
-        let editstate,
+        var editstate,
           FriendsController,
           mockFriend;
 

@@ -1,6 +1,11 @@
+"use strict";
+
 angular.module('activities').controller('ActivitiesCreateController', ['$scope', '$state', '$window', 'Authentication',
-	'activityResolve', '$modal', 'ActivitiesService', 'FileUploader',
-	($scope, $state, $window, Authentication, activity, $modal, ActivitiesService, FileUploader) =>{
+	'activityResolve', '$modal', 'ActivitiesService', 'FileUploader', '$timeout',
+	function($scope, $state, $window, Authentication, activity, $modal, ActivitiesService, FileUploader, $timeout) {
+		var bodyStyle = document.getElementById("body").style,
+			activitiesBackgroundPath = "/modules/activities/client/img/backgrounds/";
+
 		$scope.activity = activity;
 		$scope.activity.name = "N/A";
 		$scope.activity.type = "N/A";
@@ -22,27 +27,34 @@ angular.module('activities').controller('ActivitiesCreateController', ['$scope',
 			name: "Swim"
 		}];
 
-		let uploader = $scope.uploader = new FileUploader({
+		var uploader = $scope.uploader = new FileUploader({
 			url: 'api/activities/gpxData',
 			alias: 'gpxData'
 		});
 
-		$scope.setFileName = () => {
-			let fr = new FileReader(),
+		$scope.setFileName = function() {
+			var fr = new FileReader(),
 				gpxFile = document.getElementById("gpxData").files[0],
 				filename = gpxFile.name;
 
-			fr.onload = function () {
-				let gpxDataXml = parseXmlFromString(fr.result);
+			fr.onload = function() {
+				var gpxDataXml = parseXmlFromString(fr.result);
 
-				setNameTypeDescription(gpxDataXml.documentElement);
-				loadGpxDataIntoMap(gpxDataXml);
+				// Needed to update model
+				$timeout(function() {
+					setNameTypeDescription(gpxDataXml.documentElement);
+					loadGpxDataIntoMap(gpxDataXml);
+				}, 1);
 			};
 			fr.readAsText(gpxFile);
 			$scope.gpxFileName = filename;
 		};
 
-		$scope.save = (isValid) => {
+		$scope.setBodyImage = function() {
+			bodyStyle.backgroundImage = "url('" + activitiesBackgroundPath + "climbing.jpg')";
+		};
+
+		$scope.save = function(isValid) {
 			if (!isValid) {
 				$scope.$broadcast('show-errors-check-validity', 'vm.form.activityForm');
 				return false;
@@ -54,26 +66,26 @@ angular.module('activities').controller('ActivitiesCreateController', ['$scope',
 
 			$scope.activity.comments = $scope.comments;
 
-			let successCallback = (res) => {
+			var successCallback = function(res) {
 				$state.go('activities.view', {
 					activityId: res._id
 				});
 			};
 
-			let errorCallback = (res) => {
+			var errorCallback = function(res) {
 				$scope.error = res.data.message;
 			};
 			$scope.activity.$save(successCallback, errorCallback);
 
 		};
 
-		let setNameTypeDescription = (gpxDataXmlDocumentElement) => {
-			let activityType = getSingleTagData(gpxDataXmlDocumentElement, "type");
+		var setNameTypeDescription = function(gpxDataXmlDocumentElement) {
+			var activityType = getSingleTagData(gpxDataXmlDocumentElement, "type");
 
 			$scope.activity.name = getSingleTagData(gpxDataXmlDocumentElement, "name");
 			$scope.activity.description = getSingleTagData(gpxDataXmlDocumentElement, "descr");
 
-			$scope.activityTypes.forEach((type) => {
+			$scope.activityTypes.forEach(function(type) {
 				if (type.name.toLowerCase() === activityType.toLowerCase()) {
 					$scope.activityType = type;
 					$scope.activity.type = type.name;
@@ -81,8 +93,8 @@ angular.module('activities').controller('ActivitiesCreateController', ['$scope',
 			});
 		};
 
-		let getSingleTagData = (gpxDataDocumentElement, tagToGet) => {
-			let tag = gpxDataDocumentElement
+		var getSingleTagData = function(gpxDataDocumentElement, tagToGet) {
+			var tag = gpxDataDocumentElement
 				.getElementsByTagName("trk")[0]
 				.getElementsByTagName(tagToGet)[0];
 
@@ -92,26 +104,24 @@ angular.module('activities').controller('ActivitiesCreateController', ['$scope',
 			return "N/A";
 		};
 
-		let parseXmlFromString = (stringToParse) => {
+		var parseXmlFromString = function(stringToParse) {
 			return (new window.DOMParser()).parseFromString(stringToParse, "text/xml");
 		};
 
-		let loadGpxDataIntoMap = (gpxDataXml) => {
+		var loadGpxDataIntoMap = function(gpxDataXml) {
 			if (document.getElementById("map")) {
-				let map = new google.maps.Map(document.getElementById("map"), {
+				var map = new google.maps.Map(document.getElementById("map"), {
 						zoom: 8
 					}),
 					parser = new GPXParser(gpxDataXml, map);
-
-				console.log(gpxDataXml);
 
 				parser.setTrackColour("#ff0000");     // Set the track line colour
 				parser.setTrackWidth(5);              // Set the track line width
 				parser.setMinTrackPointDelta(0.001);  // Set the minimum distance between track points
 				parser.centerAndZoom(gpxDataXml);
-				let distanceCoveredOnTrack = parser.addTrackpointsToMap();         // Add the trackpoints
+				var distanceCoveredOnTrack = parser.addTrackpointsToMap();         // Add the trackpoints
 				parser.addWaypointsToMap();           // Add the waypoints
 			}
-		}
+		};
 	}
 ]);

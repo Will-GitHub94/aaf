@@ -3,13 +3,13 @@
 /**
  * Module dependencies.
  */
-let mongoose = require('mongoose'),
+var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
  * Activity Schema
  */
-let ActivitySchema = new Schema({
+var ActivitySchema = new Schema({
 	name: {
 		type: String,
 		default: '',

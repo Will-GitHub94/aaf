@@ -3,7 +3,7 @@
 
   describe('Activities Controller Tests', function () {
     // Initialize global variables
-    let ActivitiesController,
+    var ActivitiesController,
       $scope,
       $httpBackend,
       $state,
@@ -68,7 +68,7 @@
     }));
 
     describe('vm.save() as create', function () {
-      let sampleActivityPostData;
+      var sampleActivityPostData;
 
       beforeEach(function () {
         // Create a sample Activity object
@@ -94,7 +94,7 @@
       }));
 
       it('should set $scope.vm.error if error', function () {
-        let errorMessage = 'this is an error message';
+        var errorMessage = 'this is an error message';
         $httpBackend.expectPOST('api/activities', sampleActivityPostData).respond(400, {
           message: errorMessage
         });
@@ -127,7 +127,7 @@
       }));
 
       it('should set $scope.vm.error if error', inject(function (ActivitiesService) {
-        let errorMessage = 'error';
+        var errorMessage = 'error';
         $httpBackend.expectPUT(/api\/activities\/([0-9a-fA-F]{24})$/).respond(400, {
           message: errorMessage
         });

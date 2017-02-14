@@ -1,14 +1,16 @@
-angular.module('friends').config(['$stateProvider',
-	($stateProvider) => {
+"use strict";
 
-		let getFriend = ['$stateParams', 'FriendsService', ($stateParams, FriendsService) => {
-			return FriendsService.get({
+angular.module('friends').config(['$stateProvider',
+	function ($stateProvider) {
+
+		var getFriend = ['$stateParams', 'FriendsService', function ($stateParams, FriendsService) {
+			return FriendsService.getFriendsOfCurrentUser.get({
 				friendId: $stateParams.friendId
 			}).$promise;
 		}];
 
-		let newFriend = ['FriendsService', (FriendsService) => {
-			return new FriendsService();
+		var newFriend = ['FriendsService', function (FriendsService) {
+			return new FriendsService.getFriendsOfCurrentUser;
 		}];
 
 		$stateProvider

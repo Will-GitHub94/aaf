@@ -1,5 +1,7 @@
+"use strict";
+
 angular.module('activities').run(['Menus',
-	(menuService) => {
+	function(menuService) {
 		// Set top bar menu items
 		menuService.addMenuItem('topbar', {
 			title: 'Activities',
@@ -18,7 +20,7 @@ angular.module('activities').run(['Menus',
 		menuService.addSubMenuItem('topbar', 'activities', {
 			title: 'Create Activity',
 			state: 'activities.create',
-			roles: ['user']
+			roles: ['admin', 'user']
 		});
 	}
 ]);
