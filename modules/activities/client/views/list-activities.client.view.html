@@ -24,6 +24,9 @@
         <div class="col-lg-12 activitiesList">
             <div ng-repeat="activity in activities | filter:$ctrl.query | orderBy:$ctrl.orderProp"
                  class="list-group-item">
+                <input ng-if="wantToCompare" ng-model="activity.wantsToCompare"
+                       ng-click="toggleActivityToCompare(activity._id, activity.wantsToCompare)"
+                       ng-checked="activity.wantsToCompare" class="pull-right" type="checkbox">
                 <a ui-sref="activities.view({ activityId: activity._id })">
                     <small>
                         <em class="text-muted">
@@ -36,9 +39,6 @@
                     </small>
                     <h3 class="list-group-item-heading" ng-bind="activity.name"></h3>
                 </a>
-                <input ng-if="wantToCompare" ng-model="activity.wantsToCompare"
-                       ng-click="toggleActivityToCompare(activity._id, activity.wantsToCompare)"
-                       ng-checked="activity.wantsToCompare" class="pull-right" type="checkbox">
             </div>
         </div>
     </div>

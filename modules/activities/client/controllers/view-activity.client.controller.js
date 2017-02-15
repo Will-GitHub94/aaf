@@ -9,6 +9,7 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 		$scope.isMultiple = false;
 
 		if (activity.length) {
+			$scope.distanceCovered = [];
 			$scope.activities = activity;
 			$scope.isMultiple = true;
 		} else {
@@ -135,8 +136,19 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 			parser.setMinTrackPointDelta(0.001);
 			parser.centerAndZoom(gpxDataXml);
 
-			$scope.distanceCovered = parser.addTrackpointsToMap();
+			if ($scope.isMultiple) {
+				$scope.distanceCovered.push({
+					id: theActivity._id,
+					dist: parser.addTrackpointsToMap()
+				});
+			} else {
+				$scope.distanceCovered = parser.addTrackpointsToMap();
+			}
 
+			$scope.activities.forEach(function(activity) {
+				console.log(activity._id);
+			});
+			console.log($scope.distanceCovered);
 			parser.addWaypointsToMap();
 		};
 
