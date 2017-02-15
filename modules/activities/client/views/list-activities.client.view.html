@@ -6,11 +6,13 @@
         <div class="col-lg-12">
             <div class="pull-left col-lg-9 noPadLeft">
                 <label for="searchLabel">Search:</label>
-                <input id="searchLabel" ng-model="$ctrl.query" class="form-control">
+                <input id="searchLabel" ng-model="searchQuery" class="form-control">
                 <label for="sortLabel">Sort by:</label>
-                <select id="sortLabel" ng-model="$ctrl.orderProp" class="form-control">
-                    <option value="name">Alphabetical</option>
+                <select id="sortLabel" ng-model="orderProperty" class="form-control" ng-change="sortBy(orderProperty)">
+                    <option value="name">Alphabetical (ascending)</option>
+                    <option value="-name">Alphabetical (descending)</option>
                     <option value="age">Newest</option>
+                    <option value="-age">Oldest</option>
                 </select>
             </div>
             <div class="pull-right col-lg-3 noPadRight">
@@ -22,7 +24,7 @@
             </div>
         </div>
         <div class="col-lg-12 activitiesList">
-            <div ng-repeat="activity in activities | filter:$ctrl.query | orderBy:$ctrl.orderProp"
+            <div ng-repeat="activity in activities | filter:searchQuery | orderBy:orderProperty"
                  class="list-group-item">
                 <input ng-if="wantToCompare" ng-model="activity.wantsToCompare"
                        ng-click="toggleActivityToCompare(activity._id, activity.wantsToCompare)"

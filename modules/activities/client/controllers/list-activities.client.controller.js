@@ -9,7 +9,8 @@ angular.module('activities').controller('ActivitiesListController', ['$scope', '
 		$scope.activities = [];
 		$scope.wantToCompare = false;
 		$scope.compareActivities = false;
-		$scope.orderProp = 'name';
+		$scope.orderProperty = 'name';
+		$scope.reverse = false;
 
 		ActivitiesService.getActivitiesOfCurrentUser.query(function(activities) {
 			activities.forEach(function(activity) {
@@ -45,6 +46,10 @@ angular.module('activities').controller('ActivitiesListController', ['$scope', '
 
 		$scope.setBodyImage = function() {
 			bodyStyle.backgroundImage = "url('" + activitiesBackgroundPath + "basketball.jpg')";
+		};
+
+		$scope.sortBy = function(orderProperty) {
+
 		};
 	}
 ]);

@@ -41,8 +41,8 @@ angular.module('activities').controller('ActivitiesEditController', ['$scope', '
 			var errorCallback = function(res) {
 				$scope.error = res.data.message;
 			};
+			$scope.activity.gpxData = $scope.activity.gpxData.filename;
 			$scope.activity.$update(successCallback, errorCallback);
-
 		};
 
 		$scope.addComment = function(isValid) {

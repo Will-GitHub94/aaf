@@ -131,24 +131,23 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 				}),
 				parser = new GPXParser(gpxDataXml, map);
 
+			console.log(gpxDataXml);
+
 			parser.setTrackColour("#ff0000");
 			parser.setTrackWidth(5);
 			parser.setMinTrackPointDelta(0.001);
 			parser.centerAndZoom(gpxDataXml);
 
+			console.log($scope.isMultiple);
 			if ($scope.isMultiple) {
 				$scope.distanceCovered.push({
 					id: theActivity._id,
 					dist: parser.addTrackpointsToMap()
 				});
 			} else {
-				$scope.distanceCovered = parser.addTrackpointsToMap();
+				$scope.distanceCovered = parseFloat(parser.addTrackpointsToMap()).toFixed(2);
+				console.log($scope.distanceCovered);
 			}
-
-			$scope.activities.forEach(function(activity) {
-				console.log(activity._id);
-			});
-			console.log($scope.distanceCovered);
 			parser.addWaypointsToMap();
 		};
 
