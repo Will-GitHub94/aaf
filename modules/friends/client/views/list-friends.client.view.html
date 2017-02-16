@@ -3,11 +3,21 @@
         <h1>Friends</h1>
     </div>
     <div class="list-group" ng-if="friends.length > 0">
-        <a ng-repeat="friend in friends" class="list-group-item">
-            <img class="friend-user-profile-picture" ng-src="{{ friend.friend.profileImageURL }}" alt="{{ friend.friend.displayName }}">
-            <h4 class="list-group-item-heading" ng-bind="friend.friend.displayName"></h4>
-            <small class="list-group-item-text" ng-bind="friend.friend.username"></small>
-            <p class="list-group-item-text" ng-bind="friend.friend.email"></p>
+        <a ng-repeat="friend in friends" class="list-group-item col-lg-12 col-md-12">
+            <div class="col-lg-1 col-md-1 pull-left noPadLeft">
+                <img class="friend-user-profile-picture" ng-src="{{ friend.friend.profileImageURL }}" alt="{{ friend.friend.displayName }}">
+            </div>
+            <div class="col-lg-9 col-md-9 pull-left noPadRight">
+                <small>
+                    <em class="text-muted">
+                        Friends since
+                        <span ng-bind="friend.added | date:'mediumDate'"></span>
+                    </em>
+                </small>
+                <h4 class="list-group-item-heading" ng-bind="friend.friend.displayName"></h4>
+                <small class="list-group-item-text" ng-bind="friend.friend.username"></small>
+                <p class="list-group-item-text" ng-bind="friend.friend.email"></p>
+            </div>
         </a>
     </div>
     <div class="alert alert-warning text-center" ng-if="friends.length === 0">

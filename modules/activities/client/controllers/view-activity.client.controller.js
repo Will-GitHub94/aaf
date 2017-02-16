@@ -22,6 +22,7 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 
 		FriendsService.getFriendsOfCurrentUser.query(function(data) {
 			$scope.friends = data;
+			console.log($scope.friends);
 		});
 
 		$scope.authentication = Authentication;
@@ -48,17 +49,27 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 
 		$scope.openModal = function() {
 			$modal.open({
-				// if I set the `templateUrl` instead of the `template`, the wrong content was displayed
 				template:   "<div class='modal-header'>" +
 								"<h3 class='modal-title' id='modal-title'>Friends</h3>" +
 							"</div>" +
-							"<div class='modal-body list-group' id='modal-body' ng-repeat='friend in friends'>" +
-								"<img class='friend-user-profile-picture' ng-src='{{ friend.friend.profileImageURL }}' alt='{{ friend.friend.displayName }}'>" +
-								"<h4 class='list-group-item-heading' ng-bind='friend.friend.displayName'></h4>" +
-								"<small class='list-group-item-text' ng-bind='friend.friend.username'></small>" +
-								"<p class='list-group-item-text' ng-bind='friend.friend.email'></p>" +
+							"<div class='modal-body list-group col-lg-12 col-md-12' id='modal-body' ng-repeat='friend in friends'>" +
 								"<input ng-click='toggleClicked(friend.friend, friend.checked)' ng-model='friend.checked' " +
-									"ng-checked='friend.checked' class='pull-right' type='checkbox'>" +
+										"ng-checked='friend.checked' class='pull-right' type='checkbox'>" +
+								"<div class='col-lg-1 col-md-1 pull-left noPadLeft'>" +
+									"<img class='friend-user-profile-picture' " +
+										"ng-src='{{ friend.friend.profileImageURL }}' alt='{{ friend.friend.displayName }}'>" +
+								"</div>" +
+								"<div class='col-lg-9 col-md-9 pull-left noPadRight'>" +
+									"<small>" +
+										"<em class='text-muted'>" +
+											"Friends since " +
+											"<span ng-bind=\"friend.added | date:'mediumDate'\"></span>" +
+										"</em>" +
+									"</small>" +
+									"<h4 class='list-group-item-heading' ng-bind='friend.friend.displayName'></h4>" +
+									"<small class='list-group-item-text' ng-bind='friend.friend.username'></small>" +
+									"<p class='list-group-item-text' ng-bind='friend.friend.email'></p>" +
+								"</div>" +
 							"</div>" +
 							"<div class='modal-footer'>" +
 								"<button class='btn btn-primary' type='button' ng-click='ok()'>Share</button>" +

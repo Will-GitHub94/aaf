@@ -23,10 +23,29 @@ public/lib/angular-mocks
 public/lib/angular-resource
 public/lib/angular-ui-router
 public/lib/angular-ui-utils
-public/lib/bootstrap
 public/lib/es5-shim
 public/lib/jquery
 public/lib/owasp-password-strength-test
+
+# Bootstrap
+# ============================
+public/lib/bootstrap/dist/fonts
+public/lib/bootstrap/dist/js
+public/lib/bootstrap/fonts
+public/lib/bootstrap/grunt
+public/lib/bootstrap/js
+public/lib/bootstrap/less
+public/lib/bootstrap/nuget
+public/lib/bootstrap/.bower.json
+public/lib/bootstrap/bower.json
+public/lib/bootstrap/Gemfile
+public/lib/bootstrap/Gemfile.lock
+public/lib/bootstrap/Gruntfile.js
+public/lib/bootstrap/ISSUE_TEMPLATE.md
+public/lib/bootstrap/LICENSE
+public/lib/bootstrap/package.js
+public/lib/bootstrap/package.json
+public/lib/bootstrap/README.md
 
 .bluemix/
 app/tests/coverage/

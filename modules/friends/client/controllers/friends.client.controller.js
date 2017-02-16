@@ -7,17 +7,30 @@ angular.module('friends').controller('FriendsController', ['$scope', '$state', '
 			friendsBackgroundPath = "/modules/friends/client/img/backgrounds/";
 
 		$scope.users = [];
-		FriendsService.getAllUsers.query(function(data) {
-			data.forEach(function(user) {
-				if (user._id !== Authentication.user._id) {
-					$scope.users.push(user);
-				}
+		var getAllUsersExceptCurrent = function(callback) {
+			FriendsService.getAllUsers.query(function(data) {
+				data.forEach(function(user) {
+					if (user._id !== Authentication.user._id) {
+						$scope.users.push(user);
+					}
+				});
+				callback();
+			});
+		};
+
+		getAllUsersExceptCurrent(function() {
+			FriendsService.getFriendsOfCurrentUser.query(function(friends) {
+				friends.forEach(function(friend) {
+					$scope.users = $scope.users.filter(function(user) {
+						return user._id !== friend.friend._id;
+					});
+				});
 			});
 		});
 
 		$scope.authentication = Authentication;
 
-		// Whatever you are saving here, it has to be part of 'vm.friend'
+		// Whatever you are saving here, it has to be part of '$scope.friend'
 		// I.e. if you were setting a name, the ng-model would be 'vm.friend.name'
 		$scope.friend = friend;
 		$scope.error = null;

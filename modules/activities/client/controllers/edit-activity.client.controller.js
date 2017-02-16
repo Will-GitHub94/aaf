@@ -21,6 +21,12 @@ angular.module('activities').controller('ActivitiesEditController', ['$scope', '
 			name: "Swim"
 		}];
 
+		$scope.activityTypes.forEach(function(type) {
+			if (type.name.toLowerCase() === $scope.activity.type.toLowerCase()) {
+				$scope.activityType = type;
+			}
+		});
+
 		$scope.setBodyImage = function() {
 			bodyStyle.backgroundImage = "url('" + activitiesBackgroundPath + "climbing.jpg')";
 		};
