@@ -4,26 +4,28 @@
     </div>
     <div ng-if="activities.length > 0">
         <div class="col-lg-12">
-            <div class="pull-left col-lg-9 noPadLeft">
+            <div class="pull-left col-lg-9 col-md-9 col-sm-12 col-xs-12 noPadLeft">
                 <label for="searchLabel">Search:</label>
                 <input id="searchLabel" ng-model="searchQuery" class="form-control">
                 <label for="sortLabel">Sort by:</label>
                 <select id="sortLabel" ng-model="orderProperty" class="form-control" ng-change="sortBy(orderProperty)">
                     <option value="name">Alphabetical (ascending)</option>
                     <option value="-name">Alphabetical (descending)</option>
-                    <option value="age">Newest</option>
-                    <option value="-age">Oldest</option>
+                    <option value="-created">Newest</option>
+                    <option value="created">Oldest</option>
+                    <option value="-user.displayName">Owner (ascending)</option>
+                    <option value="user.displayName">Owner (descending)</option>
                 </select>
             </div>
-            <div class="pull-right col-lg-3 noPadRight">
-                <a class="btn btn-default btn-lg col-lg-6" ng-click="wantToCompare = !wantToCompare"
+            <div class="pull-right col-lg-3 col-md-3 col-sm-12 col-xs-12 noPadRight noPadLeft">
+                <a class="btn btn-default btn-lg col-lg-6 pull-left" ng-click="wantToCompare = !wantToCompare"
                    ng-class="{ 'disabled': wantToCompare}">Allow Compare</a>
-                <a class="btn btn-danger btn-lg col-lg-6" ng-click="wantToCompare = !wantToCompare"
+                <a class="btn btn-danger btn-lg col-lg-6 pull-right" ng-click="wantToCompare = !wantToCompare"
                    ng-class="{ 'disabled': !wantToCompare}">Disallow Compare</a>
                 <a class="btn btn-primary btn-lg col-lg-12" ng-class="{ 'disabled': !wantToCompare }" ng-click="compare()">Compare</a>
             </div>
         </div>
-        <div class="col-lg-12 activitiesList">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 activitiesList">
             <div ng-repeat="activity in activities | filter:searchQuery | orderBy:orderProperty"
                  class="list-group-item">
                 <input ng-if="wantToCompare" ng-model="activity.wantsToCompare"

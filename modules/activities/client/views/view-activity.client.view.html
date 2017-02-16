@@ -16,7 +16,7 @@
         <h1 ng-bind="activity.name"></h1>
     </div>
     <div class="col-lg-12">
-        <div class="col-lg-6 noPadLeft">
+        <div class="col-lg-6 col-md-6 col-sm-12 noPadLeft">
             <div class="map" id="{{ activity._id }}"></div>
             <small>
                 <em class="text-muted">
@@ -30,7 +30,7 @@
             </small>
         </div>
 
-        <div class="col-lg-6 activityDescriptionContainer noPadRight">
+        <div class="col-lg-6 col-md-6 col-sm-12 activityDescriptionContainer noPadRight">
             <div class="col-lg-12 noPadRight noPadLeft">
                 <label for="activityType">Type</label>
                 <h3 class="activityType" id="activityType" ng-bind="activity.type"></h3>
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <form name="form.commentForm" class="form-horizontal col-lg-12" ng-submit="addComment(form.commentForm.$valid)">
+    <form name="form.commentForm" class="form-horizontal col-lg-12 col-md-12 col-sm-12" ng-submit="addComment(form.commentForm.$valid)">
         <fieldset>
             <div show-errors>
                 <label class="control-label" for="comment">Add comment:</label>
@@ -56,7 +56,7 @@
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-primary">Add comment</button>
+                <button type="submit" class="btn btn-primary" style="margin-top: 20px">Add comment</button>
             </div>
         </fieldset>
     </form>

@@ -52,7 +52,7 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 				template:   "<div class='modal-header'>" +
 								"<h3 class='modal-title' id='modal-title'>Friends</h3>" +
 							"</div>" +
-							"<div class='modal-body list-group' id='modal-body'>" +
+							"<div class='modal-body list-group' id='modal-body' ng-repeat='friend in friends'>" +
 								"<img class='friend-user-profile-picture' ng-src='{{ friend.friend.profileImageURL }}' alt='{{ friend.friend.displayName }}'>" +
 								"<h4 class='list-group-item-heading' ng-bind='friend.friend.displayName'></h4>" +
 								"<small class='list-group-item-text' ng-bind='friend.friend.username'></small>" +
@@ -131,14 +131,11 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 				}),
 				parser = new GPXParser(gpxDataXml, map);
 
-			console.log(gpxDataXml);
-
 			parser.setTrackColour("#ff0000");
 			parser.setTrackWidth(5);
 			parser.setMinTrackPointDelta(0.001);
 			parser.centerAndZoom(gpxDataXml);
 
-			console.log($scope.isMultiple);
 			if ($scope.isMultiple) {
 				$scope.distanceCovered.push({
 					id: theActivity._id,
@@ -146,7 +143,6 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 				});
 			} else {
 				$scope.distanceCovered = parseFloat(parser.addTrackpointsToMap()).toFixed(2);
-				console.log($scope.distanceCovered);
 			}
 			parser.addWaypointsToMap();
 		};

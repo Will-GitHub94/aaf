@@ -16,6 +16,7 @@ angular.module('activities').controller('ActivitiesListController', ['$scope', '
 			activities.forEach(function(activity) {
 				$scope.activities.push(activity);
 			});
+			console.log($scope.activities[0]);
 		});
 
 		ActivitiesService.getActivitiesOfAllUsers.query(function(activities) {
