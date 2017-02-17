@@ -23,6 +23,9 @@ exports.invokeRolesPolicies = function () {
 		}, {
 			resources: '/api/friends/:friendId',
 			permissions: '*'
+		}, {
+			resources: '/api/friends',
+			permissions: '*'
 		}]
 	}, {
 		roles: ['user'],
@@ -34,6 +37,9 @@ exports.invokeRolesPolicies = function () {
 			permissions: ['get', 'post']
 		}, {
 			resources: '/api/friends/:friendId',
+			permissions: ['get']
+		}, {
+			resources: '/api/friends',
 			permissions: ['get']
 		}]
 	}]);

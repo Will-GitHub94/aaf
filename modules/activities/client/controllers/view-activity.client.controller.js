@@ -7,6 +7,7 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 			activitiesBackgroundPath = "/modules/activities/client/img/backgrounds/";
 
 		$scope.isMultiple = false;
+		$scope.friends = [];
 
 		if (activity.length) {
 			$scope.distanceCovered = [];
@@ -14,6 +15,7 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 			$scope.isMultiple = true;
 		} else {
 			$scope.activity = activity;
+
 			if ($scope.activity.gpxData) {
 				$scope.gpxData = $scope.activity.gpxData.data;
 				$scope.activity.gpxData = $scope.activity.gpxData.filename;
@@ -21,8 +23,10 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 		}
 
 		FriendsService.getFriendsOfCurrentUser.query(function(data) {
-			$scope.friends = data;
-			console.log($scope.friends);
+			data.forEach(function(friend) {
+				friend.isSharedWith = ($scope.activity.sharedWith.indexOf(friend.friend._id) > -1);
+				$scope.friends.push(friend);
+			});
 		});
 
 		$scope.authentication = Authentication;
@@ -40,10 +44,6 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 			var errorCallback = function(res) {
 				$scope.error = res.data.message;
 			};
-
-			$scope.friendsToShareWith.forEach(function(friendToShareWith) {
-				$scope.activity.sharedWith.push(friendToShareWith._id);
-			});
 			$scope.activity.$update(successCallback, errorCallback);
 		};
 
@@ -53,8 +53,8 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 								"<h3 class='modal-title' id='modal-title'>Friends</h3>" +
 							"</div>" +
 							"<div class='modal-body list-group col-lg-12 col-md-12' id='modal-body' ng-repeat='friend in friends'>" +
-								"<input ng-click='toggleClicked(friend.friend, friend.checked)' ng-model='friend.checked' " +
-										"ng-checked='friend.checked' class='pull-right' type='checkbox'>" +
+								"<input ng-click='toggleClicked(friend.friend._id, friend.isSharedWith)' ng-model='friend.isSharedWith' " +
+										"ng-checked='friend.isSharedWith' class='pull-right' type='checkbox'>" +
 								"<div class='col-lg-1 col-md-1 pull-left noPadLeft'>" +
 									"<img class='friend-user-profile-picture' " +
 										"ng-src='{{ friend.friend.profileImageURL }}' alt='{{ friend.friend.displayName }}'>" +
@@ -78,14 +78,14 @@ angular.module('activities').controller('ActivitiesViewController', ['$scope', '
 				size: 'lg',
 				scope: $scope,
 				controller: function($modalInstance, $scope) {
-					$scope.toggleClicked = function(friend, checked) {
+					$scope.toggleClicked = function(friendID, checked) {
 						if (checked) {
-							if ($scope.friendsToShareWith.indexOf(friend) <= -1) {
-								$scope.friendsToShareWith.push(friend);
+							if ($scope.activity.sharedWith.indexOf(friendID) <= -1) {
+								$scope.activity.sharedWith.push(friendID);
 							}
 						} else {
-							if ($scope.friendsToShareWith.indexOf(friend) > -1) {
-								$scope.friendsToShareWith.splice($scope.friendsToShareWith.indexOf(friend), 1);
+							if ($scope.activity.sharedWith.indexOf(friendID) > -1) {
+								$scope.activity.sharedWith.splice($scope.activity.sharedWith.indexOf(friendID), 1);
 							}
 						}
 					};

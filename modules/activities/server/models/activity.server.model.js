@@ -38,7 +38,7 @@ var ActivitySchema = new Schema({
 	},
 	type: {
 		type: String,
-		default: 'N/A',
+		default: '',
 		required: 'Please select an activity type'
 	},
 	description: {

@@ -55,14 +55,19 @@ angular.module('activities').controller('ActivitiesCreateController', ['$scope',
 		};
 
 		$scope.save = function(isValid) {
+			var lastItemInQueue = uploader.queue.length - 1;
+
 			if (!isValid) {
 				$scope.$broadcast('show-errors-check-validity', 'vm.form.activityForm');
 				return false;
 			}
 
-			uploader.queue[0].file.name = Date.now() + '-' + uploader.queue[0].file.name;
-			$scope.activity.gpxData = uploader.queue[0].file.name;
-			uploader.uploadAll();
+			// This works but is not ideal...
+			// ...as there are multiple gpx files going into the uploader
+			// instead should be that the one selected overwrites the previous
+			uploader.queue[lastItemInQueue].file.name = Date.now() + '-' + uploader.queue[0].file.name;
+			$scope.activity.gpxData = uploader.queue[lastItemInQueue].file.name;
+			uploader.queue[lastItemInQueue].upload();
 
 			$scope.activity.comments = $scope.comments;
 

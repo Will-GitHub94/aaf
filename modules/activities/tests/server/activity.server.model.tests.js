@@ -31,14 +31,9 @@ describe('Activity Model Unit Tests:', function () {
 		user.save(function () {
 			activity = new Activity({
 				name: 'Activity Name',
-				user: user,
-				comments: ["Activity Comment"],
-				gpxData: 'Activity GPXData',
-				sharedWith: ["1234"],
 				type: 'Activity Type',
-				description: 'Activity Description'
+				user: user
 			});
-
 			done();
 		});
 	});

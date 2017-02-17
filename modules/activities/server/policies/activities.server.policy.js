@@ -54,6 +54,15 @@ exports.invokeRolesPolicies = function() {
 			resources: '/api/activities/compare/:activityIds',
 			permissions: ['get']
 		}]
+	}, {
+		roles: ['guest'],
+		allows: [{
+			resources: '/api/activities',
+			permissions: ['get']
+		}, {
+			resources: '/api/activities/:activityId',
+			permissions: ['get']
+		}]
 	}]);
 };
 

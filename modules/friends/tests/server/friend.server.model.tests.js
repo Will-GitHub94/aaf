@@ -30,11 +30,8 @@ describe('Friend Model Unit Tests:', function () {
 
 		user.save(function () {
 			friend = new Friend({
-				friend: {},
-				user: user,
-				added: Date.now
+				user: user
 			});
-
 			done();
 		});
 	});

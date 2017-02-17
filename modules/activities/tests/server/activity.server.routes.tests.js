@@ -51,7 +51,9 @@ describe('Activity CRUD tests', function () {
 		// Save a user to the test db and create new Activity
 		user.save(function () {
 			activity = {
-				name: 'Activity name'
+				name: 'Activity name',
+				type: 'Activity type',
+				user: user
 			};
 
 			done();
@@ -190,42 +192,41 @@ describe('Activity CRUD tests', function () {
 			});
 	});
 
-	// TODO: Look into these
-	// it('should be able to get a list of Activities if not signed in', function (done) {
-	// 	// Create new Activity model instance
-	// 	var activityObj = new Activity(activity);
-	//
-	// 	// Save the activity
-	// 	activityObj.save(function () {
-	// 		// Request Activities
-	// 		request(app).get('/api/activities')
-	// 			.end(function (req, res) {
-	// 				// Set assertion
-	// 				res.body.should.be.instanceof(Array).and.have.lengthOf(1);
-	//
-	// 				// Call the assertion callback
-	// 				done();
-	// 			});
-	//
-	// 	});
-	// });
-	//
-	// it('should be able to get a single Activity if not signed in', function (done) {
-	// 	// Create new Activity model instance
-	// 	var activityObj = new Activity(activity);
-	//
-	// 	// Save the Activity
-	// 	activityObj.save(function () {
-	// 		request(app).get('/api/activities/' + activityObj._id)
-	// 			.end(function (req, res) {
-	// 				// Set assertion
-	// 				res.body.should.be.instanceof(Object).and.have.property('name', activity.name);
-	//
-	// 				// Call the assertion callback
-	// 				done();
-	// 			});
-	// 	});
-	// });
+	it('should be able to get a list of Activities if not signed in', function (done) {
+		// Create new Activity model instance
+		var activityObj = new Activity(activity);
+
+		// Save the activity
+		activityObj.save(function () {
+			// Request Activities
+			request(app).get('/api/activities')
+				.end(function (req, res) {
+					// Set assertion
+					res.body.should.be.instanceof(Array).and.have.lengthOf(1);
+
+					// Call the assertion callback
+					done();
+				});
+
+		});
+	});
+
+	it('should be able to get a single Activity if not signed in', function (done) {
+		// Create new Activity model instance
+		var activityObj = new Activity(activity);
+
+		// Save the Activity
+		activityObj.save(function () {
+			request(app).get('/api/activities/' + activityObj._id)
+				.end(function (req, res) {
+					// Set assertion
+					res.body.should.be.instanceof(Object).and.have.property('name', activity.name);
+
+					// Call the assertion callback
+					done();
+				});
+		});
+	});
 
 	it('should return proper error for single Activity with an invalid Id, if not signed in', function (done) {
 		// test is not a valid mongoose Id

@@ -12,7 +12,8 @@ angular.module('friends').factory('FriendsService', ['$resource', 'Authenticatio
 					method: 'PUT'
 				}
 			}),
-			getAllUsers: $resource('api/friends/users')
+			getAllUsers: $resource('api/friends/users'),
+			getAllFriends: $resource('api/friends')
 		};
 	}
 ]);

@@ -31,7 +31,7 @@ angular.module('friends').controller('FriendsController', ['$scope', '$state', '
 		$scope.authentication = Authentication;
 
 		// Whatever you are saving here, it has to be part of '$scope.friend'
-		// I.e. if you were setting a name, the ng-model would be 'vm.friend.name'
+		// I.e. if you were setting a name, the ng-model would be '$scope.friend.name'
 		$scope.friend = friend;
 		$scope.error = null;
 		$scope.form = {};

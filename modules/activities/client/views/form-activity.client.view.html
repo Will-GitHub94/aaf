@@ -7,7 +7,7 @@
               enctype="multipart/form-data" novalidate>
             <fieldset>
                 <div class="form-group" ng-if="!activity._id">
-                    <label for="gpxData" ng-class="{ 'disabled': gpxFileName }" class="btn btn-primary btn-file">Choose GPX
+                    <label for="gpxData" class="btn btn-primary btn-file">Choose GPX
                         <input type="file" nv-file-select name="gpxData" id="gpxData" ng-model="gpxData"
                                uploader="uploader"
                                onchange="angular.element(this).scope().setFileName()" hidden>

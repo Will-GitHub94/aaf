@@ -61,23 +61,27 @@
         </fieldset>
     </form>
 
-    <div class="col-lg-12 commentsList" ng-if="activity.comments.length > 0">
-        <div class="list-group-item" ng-repeat="comment in activity.comments">
-            <div class="pull-right" ng-show="activity.isCurrentUserOwner">
+    <div class="col-lg-12 col-md-12 commentsList" ng-if="activity.comments.length > 0">
+        <div class="list-group-item col-lg-12 col-md-12" ng-repeat="comment in activity.comments">
+            <div class="pull-right col-lg-1 col-md-1 noPadRight" ng-show="(activity.isCurrentUserOwner) || (comment.user._id === authentication.user._id)">
                 <a class="btn btn-primary" ng-click="deleteComment(comment)">
                     <i class="glyphicon glyphicon-trash"></i>
                 </a>
             </div>
-            <img class="friend-user-profile-picture" ng-src="{{ comment.user.profileImageURL }}" alt="{{ comment.user.profileImageURL }}">
-            <small style="position: absolute">
-                <em class="text-muted">
-                    Posted on
-                    <span ng-bind="comment.added | date:'mediumDate'"></span>
-                    by
-                    <span ng-bind="comment.user.displayName"></span>
-                </em>
-            </small>
-            <h4 class="list-group-item-heading" ng-bind-html="comment.comment | linky"></h4>
+            <div class="col-lg-1 col-md-1 pull-left noPadLeft">
+                <img class="friend-user-profile-picture" ng-src="{{ comment.user.profileImageURL }}" alt="{{ comment.user.profileImageURL }}">
+            </div>
+            <div class="col-lg-10 col-md-10 pull-left">
+                <small>
+                    <em class="text-muted">
+                        Posted on
+                        <span ng-bind="comment.added | date:'mediumDate'"></span>
+                        by
+                        <span ng-bind="comment.user.displayName"></span>
+                    </em>
+                </small>
+                <h4 class="list-group-item-heading" ng-bind-html="comment.comment | linky"></h4>
+            </div>
         </div>
     </div>
 </section>

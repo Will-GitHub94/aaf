@@ -51,9 +51,7 @@ describe('Friend CRUD tests', function () {
 		// Save a user to the test db and create new Friend
 		user.save(function () {
 			friend = {
-				friend: {},
-				user: user,
-				added: Date.now
+				user: user
 			};
 
 			done();
@@ -115,115 +113,34 @@ describe('Friend CRUD tests', function () {
 			});
 	});
 
-	it('should not be able to save an Friend if no name is provided', function (done) {
-		// Invalidate name field
-		friend.name = '';
-
-		agent.post('/api/auth/signin')
-			.send(credentials)
-			.expect(200)
-			.end(function (signinErr, signinRes) {
-				// Handle signin error
-				if (signinErr) {
-					return done(signinErr);
-				}
-
-				// Get the userId
-				var userId = user.id;
-
-				// Save a new Friend
-				agent.post('/api/friends')
-					.send(friend)
-					.expect(400)
-					.end(function (friendSaveErr, friendSaveRes) {
-						// Set message assertion
-						(friendSaveRes.body.message).should.match('Please fill Friend name');
-
-						// Handle Friend save error
-						done(friendSaveErr);
-					});
-			});
-	});
-
-	it('should be able to update an Friend if signed in', function (done) {
-		agent.post('/api/auth/signin')
-			.send(credentials)
-			.expect(200)
-			.end(function (signinErr, signinRes) {
-				// Handle signin error
-				if (signinErr) {
-					return done(signinErr);
-				}
-
-				// Get the userId
-				var userId = user.id;
-
-				// Save a new Friend
-				agent.post('/api/friends')
-					.send(friend)
-					.expect(200)
-					.end(function (friendSaveErr, friendSaveRes) {
-						// Handle Friend save error
-						if (friendSaveErr) {
-							return done(friendSaveErr);
-						}
-
-						// Update Friend name
-						friend.name = 'WHY YOU GOTTA BE SO MEAN?';
-
-						// Update an existing Friend
-						agent.put('/api/friends/' + friendSaveRes.body._id)
-							.send(friend)
-							.expect(200)
-							.end(function (friendUpdateErr, friendUpdateRes) {
-								// Handle Friend update error
-								if (friendUpdateErr) {
-									return done(friendUpdateErr);
-								}
-
-								// Set assertions
-								(friendUpdateRes.body._id).should.equal(friendSaveRes.body._id);
-								(friendUpdateRes.body.name).should.match('WHY YOU GOTTA BE SO MEAN?');
-
-								// Call the assertion callback
-								done();
-							});
-					});
-			});
-	});
-
-	it('should be able to get a list of Friends if not signed in', function (done) {
+	it('should not be able to get a list of Friends if not signed in', function (done) {
 		// Create new Friend model instance
 		var friendObj = new Friend(friend);
 
 		// Save the friend
 		friendObj.save(function () {
 			// Request Friends
-			request(app).get('/api/friends')
+			request(app)
+				.get('/api/friends')
+				.expect(403)
 				.end(function (req, res) {
-					// Set assertion
-					res.body.should.be.instanceof(Array).and.have.lengthOf(1);
-
-					// Call the assertion callback
-					done();
+					done(req);
 				});
 
 		});
 	});
 
-	it('should be able to get a single Friend if not signed in', function (done) {
+	it('should not be able to get a single Friend if not signed in', function (done) {
 		// Create new Friend model instance
 		var friendObj = new Friend(friend);
 
 		// Save the Friend
 		friendObj.save(function () {
-			request(app).get('/api/friends/' + friendObj._id)
+			request(app)
+				.get('/api/friends/' + friendObj._id)
+				.expect(403)
 				.end(function (req, res) {
-					// Set assertion
-					res.body.should.be.instanceof(Object).and.have.property('name', friend.name);
-
-					// Call the assertion callback
-					done();
+					done(req);
 				});
 		});
 	});
