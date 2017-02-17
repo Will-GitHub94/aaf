@@ -7,9 +7,9 @@ angular.module('activities').controller('ActivitiesCreateController', ['$scope',
 			activitiesBackgroundPath = "/modules/activities/client/img/backgrounds/";
 
 		$scope.activity = activity;
-		$scope.activity.name = "N/A";
-		$scope.activity.type = "N/A";
-		$scope.activity.description = "N/A";
+		$scope.activity.name = "";
+		$scope.activity.type = "";
+		$scope.activity.description = "";
 
 		$scope.authentication = Authentication;
 

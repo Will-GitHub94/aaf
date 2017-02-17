@@ -19,10 +19,10 @@ angular.module('friends').controller('FriendsController', ['$scope', '$state', '
 		};
 
 		getAllUsersExceptCurrent(function() {
-			FriendsService.getFriendsOfCurrentUser.query(function(friends) {
+			FriendsService.getAllFriends.query(function(friends) {
 				friends.forEach(function(friend) {
 					$scope.users = $scope.users.filter(function(user) {
-						return user._id !== friend.friend._id;
+						return ((user._id === friend.user._id) || (user._id === friend.friend._id));
 					});
 				});
 			});

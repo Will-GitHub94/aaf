@@ -17,7 +17,8 @@ var ActivitySchema = new Schema({
 		trim: true
 	},
 	comments: {
-		type: Array
+		type: Array,
+		default: []
 	},
 	gpxData: {
 		type: String,
@@ -33,7 +34,8 @@ var ActivitySchema = new Schema({
 		ref: 'User'
 	},
 	sharedWith: {
-		type: Array
+		type: Array,
+		default: []
 	},
 	type: {
 		type: String,

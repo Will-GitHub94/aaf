@@ -70,3 +70,17 @@ Run:<br>
 $ grunt
 ```
 ...to make sure everything is ok!
+
+## Create an admin
+
+Go into the mongo db. Input:
+
+```bash
+db.users.update({
+	_id: **userId**
+}, {
+	$set: {
+		roles: ['admin']
+	}
+})
+```

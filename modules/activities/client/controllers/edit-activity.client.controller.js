@@ -11,6 +11,8 @@ angular.module('activities').controller('ActivitiesEditController', ['$scope', '
 		$scope.error = null;
 		$scope.form = {};
 
+		$scope.gpxFileName = $scope.activity.gpxData.filename;
+
 		$scope.activityTypes = [{
 			name: "Ride"
 		}, {
