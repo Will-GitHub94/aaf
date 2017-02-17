@@ -58,51 +58,6 @@ describe('Friend CRUD tests', function () {
 		});
 	});
 
-	it('should be able to save a Friend if logged in', function (done) {
-		agent.post('/api/auth/signin')
-			.send(credentials)
-			.expect(200)
-			.end(function (signinErr, signinRes) {
-				// Handle signin error
-				if (signinErr) {
-					return done(signinErr);
-				}
-
-				// Get the userId
-				var userId = user.id;
-
-				// Save a new Friend
-				agent.post('/api/friends')
-					.send(friend)
-					.expect(200)
-					.end(function (friendSaveErr, friendSaveRes) {
-						// Handle Friend save error
-						if (friendSaveErr) {
-							return done(friendSaveErr);
-						}
-
-						// Get a list of Friends
-						agent.get('/api/friends')
-							.end(function (friendsGetErr, friendsGetRes) {
-								// Handle Friends save error
-								if (friendsGetErr) {
-									return done(friendsGetErr);
-								}
-
-								// Get Friends list
-								var friends = friendsGetRes.body;
-
-								// Set assertions
-								(friends[0].user._id).should.equal(userId);
-								(friends[0].name).should.match('Friend name');
-
-								// Call the assertion callback
-								done();
-							});
-					});
-			});
-	});
-
 	it('should not be able to save an Friend if not logged in', function (done) {
 		agent.post('/api/friends')
 			.send(friend)
@@ -169,49 +124,6 @@ describe('Friend CRUD tests', function () {
 			});
 	});
 
-	it('should be able to delete an Friend if signed in', function (done) {
-		agent.post('/api/auth/signin')
-			.send(credentials)
-			.expect(200)
-			.end(function (signinErr, signinRes) {
-				// Handle signin error
-				if (signinErr) {
-					return done(signinErr);
-				}
-
-				// Get the userId
-				var userId = user.id;
-
-				// Save a new Friend
-				agent.post('/api/friends')
-					.send(friend)
-					.expect(200)
-					.end(function (friendSaveErr, friendSaveRes) {
-						// Handle Friend save error
-						if (friendSaveErr) {
-							return done(friendSaveErr);
-						}
-
-						// Delete an existing Friend
-						agent.delete('/api/friends/' + friendSaveRes.body._id)
-							.send(friend)
-							.expect(200)
-							.end(function (friendDeleteErr, friendDeleteRes) {
-								// Handle friend error error
-								if (friendDeleteErr) {
-									return done(friendDeleteErr);
-								}
-
-								// Set assertions
-								(friendDeleteRes.body._id).should.equal(friendSaveRes.body._id);
-
-								// Call the assertion callback
-								done();
-							});
-					});
-			});
-	});
-
 	it('should not be able to delete an Friend if not signed in', function (done) {
 		// Set Friend user
 		friend.user = user;
@@ -232,93 +144,6 @@ describe('Friend CRUD tests', function () {
 					done(friendDeleteErr);
 				});
 
-		});
-	});
-
-	it('should be able to get a single Friend that has an orphaned user reference', function (done) {
-		// Create orphan user creds
-		var _creds = {
-			username: 'orphan',
-			password: 'M3@n.jsI$Aw3$0m3'
-		};
-
-		// Create orphan user
-		var _orphan = new User({
-			firstName: 'Full',
-			lastName: 'Name',
-			displayName: 'Full Name',
-			email: 'orphan@test.com',
-			username: _creds.username,
-			password: _creds.password,
-			provider: 'local'
-		});
-
-		_orphan.save(function (err, orphan) {
-			// Handle save error
-			if (err) {
-				return done(err);
-			}
-
-			agent.post('/api/auth/signin')
-				.send(_creds)
-				.expect(200)
-				.end(function (signinErr, signinRes) {
-					// Handle signin error
-					if (signinErr) {
-						return done(signinErr);
-					}
-
-					// Get the userId
-					var orphanId = orphan._id;
-
-					// Save a new Friend
-					agent.post('/api/friends')
-						.send(friend)
-						.expect(200)
-						.end(function (friendSaveErr, friendSaveRes) {
-							// Handle Friend save error
-							if (friendSaveErr) {
-								return done(friendSaveErr);
-							}
-
-							// Set assertions on new Friend
-							(friendSaveRes.body.name).should.equal(friend.name);
-							should.exist(friendSaveRes.body.user);
-							should.equal(friendSaveRes.body.user._id, orphanId);
-
-							// force the Friend to have an orphaned user reference
-							orphan.remove(function () {
-								// now signin with valid user
-								agent.post('/api/auth/signin')
-									.send(credentials)
-									.expect(200)
-									.end(function (err, res) {
-										// Handle signin error
-										if (err) {
-											return done(err);
-										}
-
-										// Get the Friend
-										agent.get('/api/friends/' + friendSaveRes.body._id)
-											.expect(200)
-											.end(function (friendInfoErr, friendInfoRes) {
-												// Handle Friend error
-												if (friendInfoErr) {
-													return done(friendInfoErr);
-												}
-
-												// Set assertions
-												(friendInfoRes.body._id).should.equal(friendSaveRes.body._id);
-												(friendInfoRes.body.name).should.equal(friend.name);
-												should.equal(friendInfoRes.body.user, undefined);
-
-												// Call the assertion callback
-												done();
-											});
-									});
-							});
-						});
-				});
 		});
 	});
 

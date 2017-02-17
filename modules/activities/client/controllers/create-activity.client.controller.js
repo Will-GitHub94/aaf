@@ -29,7 +29,13 @@ angular.module('activities').controller('ActivitiesCreateController', ['$scope',
 
 		var uploader = $scope.uploader = new FileUploader({
 			url: 'api/activities/gpxData',
-			alias: 'gpxData'
+			alias: 'gpxData',
+			filters: [{
+				name: 'gpxOnly',
+				fn: function(item) {
+					return (item.name.includes(".gpx"));
+				}
+			}]
 		});
 
 		$scope.setFileName = function() {

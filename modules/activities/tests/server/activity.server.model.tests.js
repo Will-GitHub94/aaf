@@ -32,7 +32,8 @@ describe('Activity Model Unit Tests:', function () {
 			activity = new Activity({
 				name: 'Activity Name',
 				type: 'Activity Type',
-				user: user
+				user: user,
+				gpxData: 'Activity GPXData'
 			});
 			done();
 		});

@@ -17,12 +17,12 @@ var ActivitySchema = new Schema({
 		trim: true
 	},
 	comments: {
-		type: Array,
-		default: []
+		type: Array
 	},
 	gpxData: {
 		type: String,
-		default: ''
+		default: '',
+		required: 'Please upload a GPX file'
 	},
 	created: {
 		type: Date,
@@ -33,8 +33,7 @@ var ActivitySchema = new Schema({
 		ref: 'User'
 	},
 	sharedWith: {
-		type: Array,
-		default: []
+		type: Array
 	},
 	type: {
 		type: String,

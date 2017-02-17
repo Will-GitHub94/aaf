@@ -53,7 +53,8 @@ describe('Activity CRUD tests', function () {
 			activity = {
 				name: 'Activity name',
 				type: 'Activity type',
-				user: user
+				user: user,
+				gpxData: 'Activity GPXData'
 			};
 
 			done();
