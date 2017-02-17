@@ -4,8 +4,8 @@
             <h1 ng-bind="activity.name"></h1>
         </div>
 
-        <div class="col-lg-12 activityContainer">
-            <div class="col-lg-6 noPadLeft activityMapContainer">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="col-lg-6 col-md-6 col-sm-12 noPadLeft">
                 <div class="map" id="{{ activity._id }}"></div>
                 <small>
                     <em class="text-muted">
@@ -19,33 +19,38 @@
                 </small>
             </div>
 
-            <div class="col-lg-6 noPadRight activityInfoContainer">
-                <div class="col-lg-12 noPadRight noPadLeft activityTypeContainer">
+            <div class="col-lg-6 col-md-6 col-sm-12 noPadRight activityDescriptionContainer noPadRight">
+                <div class="col-lg-12 noPadRight noPadLeft">
                     <label for="activityType">Type</label>
                     <h3 class="activityType" id="activityType" ng-bind="activity.type"></h3>
                 </div>
-                <div class="col-lg-12 noPadLeft noPadRight activityDistCoveredContainer" ng-repeat="dist in distanceCovered" ng-if="dist.id === activity._id">
+                <div class="col-lg-12 noPadLeft noPadRight" ng-repeat="dist in distanceCovered" ng-if="dist.id === activity._id">
                     <label for="activityDistCovered">Distance Covered (km)</label>
                     <h3 class="activityDistCovered" id="activityDistCovered" ng-bind="dist.dist"></h3>
                 </div>
-                <div class="col-lg-12 noPadRight noPadLeft activityDescriptionContainer">
+                <div class="col-lg-12 noPadRight noPadLeft">
                     <label for="activityDescription">Description</label>
                     <p class="activityDescription" id="activityDescription" ng-bind="activity.description"></p>
                 </div>
             </div>
         </div>
 
-        <div class="list-group" ng-show="activity.comments.length > 0">
-            <div class="list-group-item" ng-repeat="comment in activity.comments">
-                <small>
-                    <em class="text-muted">
-                        Posted on
-                        <span ng-bind="comment.added | date:'mediumDate'"></span>
-                        by
-                        <span ng-bind="comment.user.displayName"></span>
-                    </em>
-                </small>
-                <h4 class="list-group-item-heading" ng-bind="comment.comment"></h4>
+        <div class="list-group col-lg-12 col-md-12 commentsList" ng-show="activity.comments.length > 0">
+            <div class="list-group-item col-lg-12 col-md-12" ng-repeat="comment in activity.comments">
+                <div class="col-lg-1 col-md-1 pull-left noPadLeft">
+                    <img class="friend-user-profile-picture" ng-src="{{ comment.user.profileImageURL }}" alt="{{ comment.user.profileImageURL }}">
+                </div>
+                <div class="col-lg-10 col-md-10">
+                    <small>
+                        <em class="text-muted">
+                            Posted on
+                            <span ng-bind="comment.added | date:'mediumDate'"></span>
+                            by
+                            <span ng-bind="comment.user.displayName"></span>
+                        </em>
+                    </small>
+                    <h4 class="list-group-item-heading" ng-bind-html="comment.comment | linky"></h4>
+                </div>
             </div>
         </div>
     </div>
